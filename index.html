@@ -7,5 +7,311 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crypto Quiz</title>
-  ...
+  <style>
+    body {
+      font-family: 'Onest', sans-serif;
+      background: #03111C;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 36px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .quiz-container {
+      background: #1F242F;
+      padding: 24px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      margin-top: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+    .timer {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .answers button {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #D5D931;
+      color: #03111C;
+      border: 1px solid #1F242F;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .answers button:hover {
+      background: #caca2e;
+      transform: scale(1.01);
+    }
+    .hidden {
+      display: none;
+    }
+    .result {
+      font-size: 36px;
+      text-align: center;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+    #submit-form {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #submit-form input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #1F242F;
+      margin-right: 10px;
+      background: #0a1620;
+      color: white;
+    }
+    #submit-form button {
+      padding: 10px 16px;
+      font-size: 16px;
+      background: #D5D931;
+      color: #03111C;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    #leaderboard {
+      margin-top: 40px;
+      width: 90%;
+      max-width: 600px;
+      background-color: #1F242F;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    #leaderboard h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    #board table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    #board table td, #board table th {
+      border-bottom: 1px solid #2a2a2a;
+      padding: 8px;
+      color: #fff;
+    }
+    .start-container, #play-again-btn {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .start-container button, #play-again-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #D5D931;
+      color: #03111C;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .score {
+      display: none;
+    }
+  </style>
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    #logo {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 120px;
+    }
+  </style>
+</head>
+<body>
+  <img src="deBridge Text.svg" id="logo" alt="logo" />
+  <div style="width: 100%; height: 100%; position: fixed; z-index: -1; top: 0; left: 0; overflow: hidden">
+    <div style="width: 209px; height: 2681px; left: 0px; top: 2136px; position: absolute; opacity: 0.40; background: linear-gradient(88deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 210px; height: 3013px; left: 209px; top: 1804px; position: absolute; background: linear-gradient(87deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 209px; height: 3013px; left: 418.95px; top: 1804px; position: absolute; background: linear-gradient(87deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 210px; height: 3013px; left: 627.95px; top: 1804px; position: absolute; background: linear-gradient(87deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 209px; height: 3844px; left: 837.95px; top: 973px; position: absolute; background: linear-gradient(87deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 210px; height: 4119px; left: 1046.95px; top: 698px; position: absolute; background: linear-gradient(86deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 209px; height: 4320px; left: 1257.13px; top: 497px; position: absolute; background: linear-gradient(86deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 210px; height: 4521px; left: 1466.29px; top: 296px; position: absolute; background: linear-gradient(86deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+    <div style="width: 209px; height: 4817px; left: 1676.29px; top: 0px; position: absolute; background: linear-gradient(86deg, #FBFF3A 0%, rgba(3, 17, 28, 0) 100%)"></div>
+  </div>
+  <h1 class="fade-in" style="animation-delay: 0.2s">Crypto Quiz</h1>
+  <div class="start-container fade-in" id="start-container" style="animation-delay: 0.4s">
+    <button onclick="startGame()">Play</button>
+  </div>
+  <div class="quiz-container hidden fade-in" style="animation-delay: 0.4s">
+    <div class="timer">Score: <span id="score">0</span> | Time: <span id="time">60</span> sec</div>
+    <div class="question" id="question">Loading...</div>
+    <div class="answers" id="answers"></div>
+    <div class="result hidden" id="result"></div>
+    <div id="submit-form" class="hidden">
+      <h3>Submit your score</h3>
+      <input type="text" id="username" placeholder="Your name" />
+      <button onclick="submitScore()">Submit</button>
+      <div id="submit-msg"></div>
+    </div>
+    <div class="start-container">
+      <button id="play-again-btn" style="display: none" onclick="location.reload()">Play Again</button>
+    </div>
+  </div>
+
+  <div id="leaderboard" class="fade-in" style="animation-delay: 0.6s">
+    <h2>🏆 Leaderboard</h2>
+    <div id="board"></div>
+  </div>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What is the total supply limit of Bitcoin?",
+        answers: ["21 million", "100 million", "Unlimited", "50 million"],
+        correct: "21 million"
+      },
+      {
+        question: "Which network has the highest USDT circulation?",
+        answers: ["Ethereum", "Tron", "Binance Smart Chain", "Solana"],
+        correct: "Tron"
+      },
+      {
+        question: "What consensus algorithm does Ethereum use after The Merge?",
+        answers: ["Proof of Stake", "Proof of Work", "Delegated PoS", "Proof of Authority"],
+        correct: "Proof of Stake"
+      },
+      {
+        question: "What is a cold wallet?",
+        answers: ["A wallet stored offline", "A wallet with limited funds", "A wallet with no fees", "A hot wallet on your phone"],
+        correct: "A wallet stored offline"
+      },
+      {
+        question: "Which coin is privacy-focused?",
+        answers: ["Monero", "Litecoin", "Cardano", "Chainlink"],
+        correct: "Monero"
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let timeLeft = 60;
+    let scoreFontSize = 24;
+
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const scoreEl = document.getElementById("score");
+    const timeEl = document.getElementById("time");
+
+    function loadQuestion() {
+      if (timeLeft <= 0) {
+        showResult(score);
+        return;
+      }
+      const q = questions[current % questions.length];
+      questionEl.textContent = q.question;
+      answersEl.innerHTML = "";
+      q.answers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => {
+          if (answer === q.correct) {
+            score++;
+            scoreEl.textContent = score;
+            scoreFontSize++;
+            scoreEl.style.fontSize = scoreFontSize + "px";
+          }
+          current++;
+          loadQuestion();
+        };
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function startTimer() {
+      const timer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          showResult(score);
+        }
+      }, 1000);
+    }
+
+    function startGame() {
+      document.getElementById("start-container").classList.add("hidden");
+      document.querySelector(".quiz-container").classList.remove("hidden");
+      loadQuestion();
+      startTimer();
+    }
+
+    function showResult(score) {
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").textContent = `SCORE: ${score}`;
+      document.getElementById("submit-form").classList.remove("hidden");
+      document.getElementById("play-again-btn").style.display = 'inline-block';
+    }
+
+    const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
+    const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT 10");
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query}`;
+
+    google.charts.load('current', {'packages':['table']});
+    google.charts.setOnLoadCallback(drawTable);
+
+    function drawTable() {
+      const query = new google.visualization.Query(url);
+      query.send(function(response) {
+        const data = response.getDataTable();
+        const table = new google.visualization.Table(document.getElementById('board'));
+        table.draw(data, {showRowNumber: true, width: '100%', height: 'auto'});
+      });
+    }
+
+    function submitScore() {
+      const name = document.getElementById("username").value;
+      const score = document.getElementById("score").textContent;
+      if (!name) return alert("Please enter your name");
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzIgpuRSjGmTrVFezwFHftsfcRk0OYlLJrLq6Wy0KfMhRrWAOSql9RcvruMAQOvgbqBWQ/exec";
+      fetch(scriptURL, {
+        method: "POST",
+        body: new URLSearchParams({ name, score })
+      })
+      .then(res => {
+        document.getElementById("submit-msg").textContent = "Score submitted!";
+        drawTable();
+      })
+      .catch(err => document.getElementById("submit-msg").textContent = "Failed to submit.");
+    }
+  </scripфt>
+</body>
 </html>
