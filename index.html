@@ -17,6 +17,24 @@
       align-items: center;
       min-height: 100vh;
     }
+    h1 {
+      margin-top: 40px;
+      font-size: 36px;
+      text-align: center;
+    }
+    button {
+      font-family: 'Onest', sans-serif;
+    }
+    #start-container button {
+      background: #D5D931;
+      color: #03111C;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
     .quiz-container {
       background: #1F242F;
       padding: 30px;
@@ -27,26 +45,26 @@
       margin-top: 40px;
       text-align: center;
     }
-    h1 {
-      margin-top: 40px;
-      font-size: 36px;
-      text-align: center;
-    }
     .answers button {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       margin: 10px 0;
       width: 100%;
       padding: 12px;
       font-size: 16px;
-      background: #1F242F;
-      color: white;
-      border: 2px solid #1F242F;
+      background: #161B26;
+      color: #E6EDE4;
+      border: 1px solid #1F242F;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.2s, color 0.2s;
+      text-align: left;
+      font-weight: 500;
     }
     .answers button:hover {
-      background: #2A2F3B;
+      background: #D5D931;
+      color: #03111C;
     }
     .score-time {
       font-size: 26px;
@@ -164,14 +182,18 @@
       const btn = document.createElement("button");
       btn.textContent = answer;
       btn.onclick = () => {
-        if (answer === q.correct) {
-          score++;
-          scoreEl.textContent = score;
-          scoreFontSize++;
-          scoreEl.style.fontSize = scoreFontSize + "px";
-        }
-        current++;
-        loadQuestion();
+        btn.style.background = '#D5D931';
+        btn.style.color = '#03111C';
+        setTimeout(() => {
+          if (answer === q.correct) {
+            score++;
+            scoreEl.textContent = score;
+            scoreFontSize++;
+            scoreEl.style.fontSize = scoreFontSize + "px";
+          }
+          current++;
+          loadQuestion();
+        }, 150);
       };
       answersEl.appendChild(btn);
     });
