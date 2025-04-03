@@ -2,37 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crypto Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    /* Сбрасываем отступы у body */
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Onest', sans-serif;
       background: #03111C;
       color: #E6EDE4;
-      margin: 0;
-      padding: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+      justify-content: center; /* Центрируем главный контейнер по горизонтали */
     }
+
+    /* Главный контейнер, задаёт одинаковую ширину всем элементам */
+    .app-container {
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;          /* Центрирование */
+      text-align: center;      /* Текст по центру */
+    }
+
+    /* Заголовок */
     h1 {
       margin-top: 20px;
       font-size: 36px;
-      text-align: center;
       color: #E6EDE4;
     }
-    /* Контейнер, который задаёт одинаковую ширину для всех блоков */
-    .container {
-      width: 100%;
-      max-width: 660px;
-      margin: 20px auto;
-      text-align: center;
-    }
+
     /* Универсальные стили для кнопок */
     button {
-      font-family: 'Onest', sans-serif;
       width: 100%;
       display: block;
       background: #D5D931;
@@ -43,82 +44,79 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin: 0; /* убираем лишние внешние отступы */
     }
+
+    /* Квиз (вопросы/ответы) */
     .quiz-container {
       background: #1F242F;
       padding: 30px;
       border-radius: 8px;
-      width: 100%;
-      max-width: 660px;
-      margin-top: 40px;
-      text-align: center;
+      margin-top: 20px;  /* отступ сверху для наглядности */
+      display: none;     /* изначально скрыт */
     }
-    .question {
-      font-size: 32px;
-      font-weight: 600;
-      margin-bottom: 24px;
-      color: #E6EDE4;
-    }
-    .answers button {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 10px 0;
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background: #161B26;
-      color: #E6EDE4;
-      border: 1px solid #1F242F;
-      border-radius: 8px;
-      transition: background 0.2s, color 0.2s;
-      text-align: left;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .answers button:hover {
-      background: #D5D931;
-      color: #03111C;
-    }
+
     .score-time {
       font-size: 26px;
       margin-bottom: 30px;
     }
     .score-time div {
       margin: 10px 0;
-      color: #E6EDE4;
     }
+    .question {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    /* Ответы (кнопки внутри квиза) */
+    .answers button {
+      background: #161B26;
+      color: #E6EDE4;
+      border: 1px solid #1F242F;
+      border-radius: 8px;
+      text-align: left;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+      margin: 10px 0;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .answers button:hover {
+      background: #D5D931;
+      color: #03111C;
+    }
+
     .hidden {
       display: none;
     }
     .result {
       font-size: 48px;
-      text-align: center;
       margin-top: 40px;
       font-weight: bold;
-      color: #E6EDE4;
     }
+
+    /* Блок с формой отправки */
     #submit-form {
       margin-top: 20px;
-      text-align: center;
     }
+
+    /* Лидерборд */
     #leaderboard {
-      margin-top: 50px;
-      width: 100%;
-      max-width: 660px;
       background-color: #1F242F;
-      padding: 20px;
+      padding: 30px;
       border-radius: 8px;
-      color: #E6EDE4;
+      margin-top: 20px;
     }
     #leaderboard h2 {
-      text-align: center;
-      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       font-weight: 600;
+      margin: 0 0 20px 0;
     }
     #board {
       border-top: 1px solid #444;
@@ -126,65 +124,72 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div style="margin-top: 30px;">
-      <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 24px;"/>
+  <div class="app-container">
+    <!-- Лого и заголовок -->
+    <div style="margin-top: 20px;">
+      <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 24px;">
     </div>
     <h1>Crypto Quiz</h1>
-  </div>
-  
-  <!-- Контейнер для кнопки "Play" -->
-  <div class="container" id="start-container">
-    <button onclick="startGame()">Play</button>
-  </div>
-  
-  <div class="quiz-container" style="display:none;">
-    <div class="score-time">
-      <div>Score:</div>
-      <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
-      <div>Time: <span id="time">7</span> sec</div>
+
+    <!-- Кнопка "Play" -->
+    <div id="start-container" style="margin-top:20px;">
+      <button onclick="startGame()">Play</button>
     </div>
-    <div class="question" id="question">Loading...</div>
-    <div class="answers" id="answers"></div>
-    <div class="result hidden" id="result"></div>
-    <div class="hidden" id="submit-form">
-      <h3>Submit your score</h3>
-      <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
-        <input id="username" type="text" placeholder="Your name" style="
-          flex: 1;
-          padding: 14px 20px;
-          font-size: 16px;
-          border-radius: 8px;
-          border: 1px solid #2A313F;
-          background: #1F242F;
-          color: #E6EDE4;
-          outline: none;
-        "/>
-        <button onclick="submitScore()" style="
-          padding: 14px 24px;
-          font-size: 16px;
-          font-weight: bold;
-          background: #D5D931;
-          color: #03111C;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-        ">Submit</button>
+
+    <!-- Квиз -->
+    <div class="quiz-container">
+      <div class="score-time">
+        <div>Score:</div>
+        <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
+        <div>Time: <span id="time">7</span> sec</div>
       </div>
-      <div id="submit-msg" style="margin-top: 10px;"></div>
+      <div class="question" id="question">Loading...</div>
+      <div class="answers" id="answers"></div>
+
+      <div class="result hidden" id="result"></div>
+      <div class="hidden" id="submit-form">
+        <h3>Submit your score</h3>
+        <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
+          <input id="username" type="text" placeholder="Your name" style="
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #2A313F;
+            background: #1F242F;
+            color: #E6EDE4;
+            outline: none;
+          "/>
+          <button onclick="submitScore()" style="
+            background: #D5D931;
+            color: #03111C;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 14px 24px;
+          ">Submit</button>
+        </div>
+        <div id="submit-msg" style="margin-top: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- Кнопка "Play Again" (появляется после окончания квиза) -->
+    <div style="margin-top: 20px;">
+      <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
+    </div>
+
+    <!-- Лидерборд -->
+    <div id="leaderboard">
+      <h2>
+        <img src="https://cdn.debridge.finance/images/cup.svg" alt="Cup" style="height: 24px;">
+        Leaderboard
+      </h2>
+      <div id="board"></div>
     </div>
   </div>
-  
-  <!-- Контейнер для кнопки "Play Again" -->
-  <div class="container">
-    <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
-  </div>
-  
-  <div id="leaderboard">
-    <h2><img src="https://cdn.debridge.finance/images/cup.svg" alt="Cup" style="height: 24px;"> Leaderboard</h2>
-    <div id="board"></div>
-  </div>
-  
+
   <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
   <script>
     let current = 0;
@@ -196,48 +201,6 @@
     const answersEl = document.getElementById("answers");
     const scoreEl = document.getElementById("score-display");
     const timeEl = document.getElementById("time");
-
-    function loadQuestion() {
-      if (timeLeft <= 0) return;
-      const q = questions[current % questions.length];
-      questionEl.textContent = q.question;
-      answersEl.innerHTML = "";
-      q.answers.forEach((answer, index) => {
-        const btn = document.createElement("button");
-        btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div><div style='font-size: 16px;'>${answer}</div>`;
-        btn.onclick = () => {
-          btn.style.background = '#D5D931';
-          btn.style.color = '#03111C';
-          setTimeout(() => {
-            if (answer === q.correct) {
-              score++;
-              scoreEl.textContent = score;
-              scoreFontSize++;
-              scoreEl.style.fontSize = scoreFontSize + "px";
-            }
-            current++;
-            loadQuestion();
-          }, 150);
-        };
-        answersEl.appendChild(btn);
-      });
-    }
-
-    function startTimer() {
-      const timer = setInterval(() => {
-        timeLeft--;
-        timeEl.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          showResult(score);
-        }
-      }, 1000);
-    }
-
-    window.onload = () => {
-      document.querySelector('.quiz-container').style.display = 'none';
-      document.getElementById('start-container').style.display = 'block';
-    };
 
     const questions = [
       {
@@ -267,6 +230,7 @@
       }
     ];
 
+    // Google Sheets
     const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
     const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT 10");
     const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query}`;
@@ -283,15 +247,68 @@
       });
     }
 
+    // Запуск игры
+    function startGame() {
+      document.querySelector('.quiz-container').style.display = 'block';
+      document.getElementById('start-container').style.display = 'none';
+      loadQuestion();
+      startTimer();
+    }
+
+    // Загрузка вопроса
+    function loadQuestion() {
+      if (timeLeft <= 0) return;
+      const q = questions[current % questions.length];
+      questionEl.textContent = q.question;
+      answersEl.innerHTML = "";
+
+      q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.innerHTML = `
+          <div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
+          <div style='font-size: 16px;'>${answer}</div>
+        `;
+        btn.onclick = () => {
+          btn.style.background = '#D5D931';
+          btn.style.color = '#03111C';
+          setTimeout(() => {
+            if (answer === q.correct) {
+              score++;
+              scoreEl.textContent = score;
+              scoreFontSize++;
+              scoreEl.style.fontSize = scoreFontSize + "px";
+            }
+            current++;
+            loadQuestion();
+          }, 150);
+        };
+        answersEl.appendChild(btn);
+      });
+    }
+
+    // Таймер
+    function startTimer() {
+      const timer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          showResult(score);
+        }
+      }, 1000);
+    }
+
+    // Показ результата
     function showResult(score) {
       document.getElementById("result").classList.remove("hidden");
-      document.getElementById("result").textContent = ``;
+      document.getElementById("result").textContent = "";
       document.getElementById("submit-form").classList.remove("hidden");
       document.getElementById("play-again-btn").style.display = 'block';
       questionEl.classList.add("hidden");
       answersEl.classList.add("hidden");
     }
 
+    // Отправка результата
     function submitScore() {
       const name = document.getElementById("username").value;
       const score = document.getElementById("score-display").textContent;
@@ -310,13 +327,6 @@
         }, 1500);
       })
       .catch(err => document.getElementById("submit-msg").textContent = "Failed to submit.");
-    }
-
-    function startGame() {
-      document.querySelector('.quiz-container').style.display = 'block';
-      document.getElementById('start-container').style.display = 'none';
-      loadQuestion();
-      startTimer();
     }
   </script>
 </body>
