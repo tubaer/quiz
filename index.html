@@ -114,34 +114,6 @@
 
 <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
 <script>
-  const questions = [
-    {
-      question: "What is the total supply limit of Bitcoin?",
-      answers: ["21 million", "100 million", "Unlimited", "50 million"],
-      correct: "21 million"
-    },
-    {
-      question: "Which network has the highest USDT circulation?",
-      answers: ["Ethereum", "Tron", "Binance Smart Chain", "Solana"],
-      correct: "Tron"
-    },
-    {
-      question: "What consensus algorithm does Ethereum use after The Merge?",
-      answers: ["Proof of Stake", "Proof of Work", "Delegated PoS", "Proof of Authority"],
-      correct: "Proof of Stake"
-    },
-    {
-      question: "What is a cold wallet?",
-      answers: ["A wallet stored offline", "A wallet with limited funds", "A wallet with no fees", "A hot wallet on your phone"],
-      correct: "A wallet stored offline"
-    },
-    {
-      question: "Which coin is privacy-focused?",
-      answers: ["Monero", "Litecoin", "Cardano", "Chainlink"],
-      correct: "Monero"
-    }
-  ];
-
   let current = 0;
   let score = 0;
   let timeLeft = 60;
@@ -192,6 +164,34 @@
     document.querySelector('.quiz-container').style.display = 'none';
     document.getElementById('start-container').style.display = 'block';
   };
+
+  const questions = [
+    {
+      question: "What is the total supply limit of Bitcoin?",
+      answers: ["21 million", "100 million", "Unlimited", "50 million"],
+      correct: "21 million"
+    },
+    {
+      question: "Which network has the highest USDT circulation?",
+      answers: ["Ethereum", "Tron", "Binance Smart Chain", "Solana"],
+      correct: "Tron"
+    },
+    {
+      question: "What consensus algorithm does Ethereum use after The Merge?",
+      answers: ["Proof of Stake", "Proof of Work", "Delegated PoS", "Proof of Authority"],
+      correct: "Proof of Stake"
+    },
+    {
+      question: "What is a cold wallet?",
+      answers: ["A wallet stored offline", "A wallet with limited funds", "A wallet with no fees", "A hot wallet on your phone"],
+      correct: "A wallet stored offline"
+    },
+    {
+      question: "Which coin is privacy-focused?",
+      answers: ["Monero", "Litecoin", "Cardano", "Chainlink"],
+      correct: "Monero"
+    }
+  ];
 
   const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
   const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT 10");
