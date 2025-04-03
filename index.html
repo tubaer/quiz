@@ -107,7 +107,7 @@
 </div>
 <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
 <script>
-  let questions = []; fetch("/questions.json").then(r => r.json()).then(data => { questions = data; }).then(() => {
+  const questions = [
     {
       question: "What is the total supply limit of Bitcoin?",
       answers: ["21 million", "100 million", "Unlimited", "50 million"],
@@ -164,7 +164,7 @@
           scoreEl.style.fontSize = scoreFontSize + "px";
         }
         current++;
-        loadQuestion(); });
+        loadQuestion();
       };
       answersEl.appendChild(btn);
     });
