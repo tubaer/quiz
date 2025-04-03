@@ -95,7 +95,7 @@
       text-align: center;
     }
     #play-again-btn {
-      padding: 16px 0;
+      padding: 16px;
       font-size: 16px;
       cursor: pointer;
       display: none;
@@ -106,6 +106,8 @@
       font-weight: bold;
       width: 90%;
       max-width: 600px;
+      display: block;
+      margin: 20px auto 0;
     }
     #leaderboard {
       margin-top: 50px;
@@ -132,7 +134,7 @@
 </head>
 <body>
   <div style="margin-top: 30px;">
-    <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 30px;"/>
+    <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 24px;"/>
   </div>
   <h1>Crypto Quiz</h1>
   <div id="start-container" style="margin-top:20px;text-align:center;">
@@ -174,9 +176,7 @@
       <div id="submit-msg" style="margin-top: 10px;"></div>
     </div>
   </div>
-  <div style="margin-top: 20px;">
-    <button id="play-again-btn" onclick="location.reload()">Play Again</button>
-  </div>
+  <button id="play-again-btn" onclick="location.reload()">Play Again</button>
   <div id="leaderboard">
     <h2><img src="https://cdn.debridge.finance/images/cup.svg" alt="Cup" style="height: 24px;"> Leaderboard</h2>
     <div id="board"></div>
