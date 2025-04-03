@@ -92,29 +92,6 @@
       margin-top: 20px;
       text-align: center;
     }
-    #submit-form input {
-      padding: 10px;
-      margin: 5px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #1F242F;
-      background: #1F242F;
-      color: white;
-      outline-offset: -1px;
-    }
-    #submit-form input::placeholder {
-      color: #888;
-    }
-    #submit-form button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #D5D931;
-      border: none;
-      border-radius: 8px;
-      color: #03111C;
-      font-weight: bold;
-    }
     #play-again-btn {
       padding: 10px 20px;
       font-size: 16px;
@@ -159,9 +136,29 @@
   <div class="result hidden" id="result"></div>
   <div class="hidden" id="submit-form">
     <h3>Submit your score</h3>
-    <input id="username" placeholder="Your name" type="text"/>
-    <button onclick="submitScore()">Submit</button>
-    <div id="submit-msg"></div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
+      <input id="username" type="text" placeholder="Your name" style="
+        flex: 1;
+        padding: 14px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #1F242F;
+        background: #1F242F;
+        color: #E6EDE4;
+        outline: none;
+      "/>
+      <button onclick="submitScore()" style="
+        padding: 14px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        background: #D5D931;
+        color: #03111C;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      ">ОТПРАВИТЬ</button>
+    </div>
+    <div id="submit-msg" style="margin-top: 10px;"></div>
   </div>
 </div>
 <div style="margin-top: 20px;">
