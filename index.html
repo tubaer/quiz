@@ -46,9 +46,10 @@
       text-align: center;
     }
     .question {
-      font-size: 22px;
+      font-size: 28px;
       font-weight: 600;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      color: #E6EDE4;
     }
     .answers button {
       display: flex;
@@ -99,6 +100,7 @@
       border: 1px solid #1F242F;
       background: #1F242F;
       color: white;
+      outline-offset: -1px;
     }
     #submit-form button {
       padding: 10px 20px;
@@ -154,7 +156,7 @@
   <div class="result hidden" id="result"></div>
   <div class="hidden" id="submit-form">
     <h3>Submit your score</h3>
-    <input id="username" placeholder="Your name" type="text"/>
+    <input id="username" placeholder="Your name" type="text" style="border: 1px solid #1F242F; background: #1F242F; color: #E6EDE4;"/>
     <button onclick="submitScore()">Submit</button>
     <div id="submit-msg"></div>
   </div>
@@ -185,7 +187,7 @@
     answersEl.innerHTML = "";
     q.answers.forEach((answer, index) => {
       const btn = document.createElement("button");
-      btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div><div>${answer}</div>`;
+      btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div><div style='font-size: 16px; color: #E6EDE4;'>${answer}</div>`;
       btn.onclick = () => {
         btn.style.background = '#D5D931';
         btn.style.color = '#03111C';
