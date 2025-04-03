@@ -125,10 +125,7 @@
   const timeEl = document.getElementById("time");
 
   function loadQuestion() {
-    if (timeLeft <= 0) {
-      showResult(score);
-      return;
-    }
+    if (timeLeft <= 0) return;
     const q = questions[current % questions.length];
     questionEl.textContent = q.question;
     answersEl.innerHTML = "";
@@ -214,6 +211,8 @@
     document.getElementById("result").textContent = `SCORE: ${score}`;
     document.getElementById("submit-form").classList.remove("hidden");
     document.getElementById("play-again-btn").style.display = 'inline-block';
+    questionEl.classList.add("hidden");
+    answersEl.classList.add("hidden");
   }
 
   function submitScore() {
