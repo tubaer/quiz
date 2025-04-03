@@ -46,7 +46,7 @@
       text-align: center;
     }
     .question {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 600;
       margin-bottom: 24px;
       color: #E6EDE4;
@@ -102,6 +102,9 @@
       color: white;
       outline-offset: -1px;
     }
+    #submit-form input::placeholder {
+      color: #888;
+    }
     #submit-form button {
       padding: 10px 20px;
       font-size: 16px;
@@ -156,7 +159,7 @@
   <div class="result hidden" id="result"></div>
   <div class="hidden" id="submit-form">
     <h3>Submit your score</h3>
-    <input id="username" placeholder="Your name" type="text" style="border: 1px solid #1F242F; background: #1F242F; color: #E6EDE4;"/>
+    <input id="username" placeholder="Your name" type="text"/>
     <button onclick="submitScore()">Submit</button>
     <div id="submit-msg"></div>
   </div>
