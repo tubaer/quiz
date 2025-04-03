@@ -135,9 +135,77 @@
     #board {
       border-top: 1px solid #444;
     }
+
+    /* Background стили */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: #03111C;
+      overflow: hidden;
+      transform: rotate(-180deg);
+      transform-origin: top left;
+    }
+    .stripe {
+      position: absolute;
+      width: 90.03px;
+      height: 1473.23px;
+      transform: rotate(180deg);
+      transform-origin: top left;
+      background: linear-gradient(88deg, #FBFF3A 0%, #03111C 100%);
+    }
+    .blur-circle {
+      position: absolute;
+      border-radius: 9999px;
+      background: #FBFF3A;
+      mix-blend-mode: lighten;
+    }
+    .blur-circle.first {
+      width: 1449.38px;
+      height: 532.84px;
+      left: -1888.38px;
+      top: -332.84px;
+      box-shadow: 1133.8px 1133.8px 1133.8px;
+      filter: blur(566.9px);
+    }
+    .blur-circle.second {
+      width: 1080px;
+      height: 564px;
+      left: 180px;
+      top: 1095px;
+      opacity: 0.60;
+      box-shadow: 1115.5px 1115.5px 1115.5px;
+      filter: blur(557.75px);
+    }
   </style>
 </head>
 <body>
+  <!-- Задний фон -->
+  <div class="background">
+    <div class="stripe" style="left: 90.15px;  top: 1780.28px; opacity: 0.40;"></div>
+    <div class="stripe" style="left: 180.18px; top: 1550.09px;"></div>
+    <div class="stripe" style="left: 270.21px; top: 1319.90px;"></div>
+    <div class="stripe" style="left: 360.24px; top: 1224.34px;"></div>
+    <div class="stripe" style="left: 450.27px; top: 1607.64px;"></div>
+    <div class="stripe" style="left: 540.30px; top: 1722.74px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 630.34px; top: 1952.93px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 720.37px; top: 2068.02px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 810.40px; top: 2183.12px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 900.43px; top: 2125.57px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 990.46px; top: 2010.48px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 1080.49px; top: 1722.74px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 1170.37px; top: 1954.88px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 1260.24px; top: 2187.03px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 1350.12px; top: 2316px;   background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    <div class="stripe" style="left: 1440px;   top: 2161.24px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
+    
+    <div class="blur-circle first"></div>
+    <div class="blur-circle second"></div>
+  </div>
+
   <div class="app-container">
     <!-- Лого и заголовок -->
     <div>
