@@ -48,11 +48,11 @@
       background: #555;
     }
     .score-time {
-      font-size: 22px;
-      margin-bottom: 20px;
+      font-size: 26px;
+      margin-bottom: 30px;
     }
     .score-time div {
-      margin: 6px 0;
+      margin: 10px 0;
     }
     .hidden {
       display: none;
@@ -89,7 +89,7 @@
 <div class="quiz-container">
   <div class="score-time">
     <div>Score:</div>
-    <div id="score-display" style="font-size:32px; font-weight:bold;">0</div>
+    <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
     <div>Time: <span id="time">60</span> sec</div>
   </div>
   <div class="question" id="question">Loading...</div>
@@ -117,7 +117,7 @@
   let current = 0;
   let score = 0;
   let timeLeft = 60;
-  let scoreFontSize = 32;
+  let scoreFontSize = 64;
 
   const questionEl = document.getElementById("question");
   const answersEl = document.getElementById("answers");
@@ -208,7 +208,7 @@
 
   function showResult(score) {
     document.getElementById("result").classList.remove("hidden");
-    document.getElementById("result").textContent = `SCORE: ${score}`;
+    document.getElementById("result").textContent = ``;
     document.getElementById("submit-form").classList.remove("hidden");
     document.getElementById("play-again-btn").style.display = 'inline-block';
     questionEl.classList.add("hidden");
