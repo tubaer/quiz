@@ -9,7 +9,7 @@
     body {
       font-family: 'Onest', sans-serif;
       background: #03111C;
-      color: #fff;
+      color: #E6EDE4;
       margin: 0;
       padding: 0;
       display: flex;
@@ -18,9 +18,10 @@
       min-height: 100vh;
     }
     h1 {
-      margin-top: 40px;
+      margin-top: 20px;
       font-size: 36px;
       text-align: center;
+      color: #E6EDE4;
     }
     button {
       font-family: 'Onest', sans-serif;
@@ -41,7 +42,6 @@
       border-radius: 8px;
       max-width: 600px;
       width: 90%;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
       margin-top: 40px;
       text-align: center;
     }
@@ -78,6 +78,7 @@
     }
     .score-time div {
       margin: 10px 0;
+      color: #E6EDE4;
     }
     .hidden {
       display: none;
@@ -87,13 +88,14 @@
       text-align: center;
       margin-top: 40px;
       font-weight: bold;
+      color: #E6EDE4;
     }
     #submit-form {
       margin-top: 20px;
       text-align: center;
     }
     #play-again-btn {
-      padding: 10px 20px;
+      padding: 14px 0;
       font-size: 16px;
       cursor: pointer;
       display: none;
@@ -102,6 +104,8 @@
       border-radius: 8px;
       color: #03111C;
       font-weight: bold;
+      width: 90%;
+      max-width: 600px;
     }
     #leaderboard {
       margin-top: 50px;
@@ -110,10 +114,16 @@
       background-color: #1F242F;
       padding: 20px;
       border-radius: 8px;
+      color: #E6EDE4;
     }
     #leaderboard h2 {
       text-align: center;
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 600;
     }
     #board {
       border-top: 1px solid #444;
@@ -121,186 +131,189 @@
   </style>
 </head>
 <body>
-<h1>Crypto Quiz</h1>
-<div id="start-container" style="margin-top:20px;text-align:center;">
-  <button onclick="startGame()">Play</button>
-</div>
-<div class="quiz-container">
-  <div class="score-time">
-    <div>Score:</div>
-    <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
-    <div>Time: <span id="time">60</span> sec</div>
+  <div style="margin-top: 30px;">
+    <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 40px;"/>
   </div>
-  <div class="question" id="question">Loading...</div>
-  <div class="answers" id="answers"></div>
-  <div class="result hidden" id="result"></div>
-  <div class="hidden" id="submit-form">
-    <h3>Submit your score</h3>
-    <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
-      <input id="username" type="text" placeholder="Your name" style="
-        flex: 1;
-        padding: 14px 20px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: 1px solid #2A313F;
-        background: #1F242F;
-        color: #E6EDE4;
-        outline: none;
-      "/>
-      <button onclick="submitScore()" style="
-        padding: 14px 24px;
-        font-size: 16px;
-        font-weight: bold;
-        background: #D5D931;
-        color: #03111C;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      ">Submit</button>
+  <h1>Crypto Quiz</h1>
+  <div id="start-container" style="margin-top:20px;text-align:center;">
+    <button onclick="startGame()">Play</button>
+  </div>
+  <div class="quiz-container">
+    <div class="score-time">
+      <div>Score:</div>
+      <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
+      <div>Time: <span id="time">60</span> sec</div>
     </div>
-    <div id="submit-msg" style="margin-top: 10px;"></div>
+    <div class="question" id="question">Loading...</div>
+    <div class="answers" id="answers"></div>
+    <div class="result hidden" id="result"></div>
+    <div class="hidden" id="submit-form">
+      <h3>Submit your score</h3>
+      <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
+        <input id="username" type="text" placeholder="Your name" style="
+          flex: 1;
+          padding: 14px 20px;
+          font-size: 16px;
+          border-radius: 8px;
+          border: 1px solid #2A313F;
+          background: #1F242F;
+          color: #E6EDE4;
+          outline: none;
+        "/>
+        <button onclick="submitScore()" style="
+          padding: 14px 24px;
+          font-size: 16px;
+          font-weight: bold;
+          background: #D5D931;
+          color: #03111C;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+        ">Submit</button>
+      </div>
+      <div id="submit-msg" style="margin-top: 10px;"></div>
+    </div>
   </div>
-</div>
-<div style="margin-top: 20px;">
-  <button id="play-again-btn" onclick="location.reload()">Play Again</button>
-</div>
-<div id="leaderboard">
-  <h2>🏆 Leaderboard</h2>
-  <div id="board"></div>
-</div>
-<script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
-<script>
-  let current = 0;
-  let score = 0;
-  let timeLeft = 60;
-  let scoreFontSize = 64;
+  <div style="margin-top: 20px;">
+    <button id="play-again-btn" onclick="location.reload()">Play Again</button>
+  </div>
+  <div id="leaderboard">
+    <h2><img src="https://cdn.debridge.finance/images/cup.svg" alt="Cup" style="height: 24px;"> Leaderboard</h2>
+    <div id="board"></div>
+  </div>
+  <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+  <script>
+    let current = 0;
+    let score = 0;
+    let timeLeft = 60;
+    let scoreFontSize = 64;
 
-  const questionEl = document.getElementById("question");
-  const answersEl = document.getElementById("answers");
-  const scoreEl = document.getElementById("score-display");
-  const timeEl = document.getElementById("time");
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const scoreEl = document.getElementById("score-display");
+    const timeEl = document.getElementById("time");
 
-  function loadQuestion() {
-    if (timeLeft <= 0) return;
-    const q = questions[current % questions.length];
-    questionEl.textContent = q.question;
-    answersEl.innerHTML = "";
-    q.answers.forEach((answer, index) => {
-      const btn = document.createElement("button");
-      btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div><div style='font-size: 16px; color: #E6EDE4;'>${answer}</div>`;
-      btn.onclick = () => {
-        btn.style.background = '#D5D931';
-        btn.style.color = '#03111C';
-        setTimeout(() => {
-          if (answer === q.correct) {
-            score++;
-            scoreEl.textContent = score;
-            scoreFontSize++;
-            scoreEl.style.fontSize = scoreFontSize + "px";
-          }
-          current++;
-          loadQuestion();
-        }, 150);
-      };
-      answersEl.appendChild(btn);
-    });
-  }
-
-  function startTimer() {
-    const timer = setInterval(() => {
-      timeLeft--;
-      timeEl.textContent = timeLeft;
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        showResult(score);
-      }
-    }, 1000);
-  }
-
-  window.onload = () => {
-    document.querySelector('.quiz-container').style.display = 'none';
-    document.getElementById('start-container').style.display = 'block';
-  };
-
-  const questions = [
-    {
-      question: "What is the total supply limit of Bitcoin?",
-      answers: ["21 million", "100 million", "Unlimited", "50 million"],
-      correct: "21 million"
-    },
-    {
-      question: "Which network has the highest USDT circulation?",
-      answers: ["Ethereum", "Tron", "Binance Smart Chain", "Solana"],
-      correct: "Tron"
-    },
-    {
-      question: "What consensus algorithm does Ethereum use after The Merge?",
-      answers: ["Proof of Stake", "Proof of Work", "Delegated PoS", "Proof of Authority"],
-      correct: "Proof of Stake"
-    },
-    {
-      question: "What is a cold wallet?",
-      answers: ["A wallet stored offline", "A wallet with limited funds", "A wallet with no fees", "A hot wallet on your phone"],
-      correct: "A wallet stored offline"
-    },
-    {
-      question: "Which coin is privacy-focused?",
-      answers: ["Monero", "Litecoin", "Cardano", "Chainlink"],
-      correct: "Monero"
+    function loadQuestion() {
+      if (timeLeft <= 0) return;
+      const q = questions[current % questions.length];
+      questionEl.textContent = q.question;
+      answersEl.innerHTML = "";
+      q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div><div style='font-size: 16px;'>${answer}</div>`;
+        btn.onclick = () => {
+          btn.style.background = '#D5D931';
+          btn.style.color = '#03111C';
+          setTimeout(() => {
+            if (answer === q.correct) {
+              score++;
+              scoreEl.textContent = score;
+              scoreFontSize++;
+              scoreEl.style.fontSize = scoreFontSize + "px";
+            }
+            current++;
+            loadQuestion();
+          }, 150);
+        };
+        answersEl.appendChild(btn);
+      });
     }
-  ];
 
-  const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
-  const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT 10");
-  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query}`;
+    function startTimer() {
+      const timer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          showResult(score);
+        }
+      }, 1000);
+    }
 
-  google.charts.load('current', {'packages':['table']});
-  google.charts.setOnLoadCallback(drawTable);
+    window.onload = () => {
+      document.querySelector('.quiz-container').style.display = 'none';
+      document.getElementById('start-container').style.display = 'block';
+    };
 
-  function drawTable() {
-    const query = new google.visualization.Query(url);
-    query.send(function(response) {
-      const data = response.getDataTable();
-      const table = new google.visualization.Table(document.getElementById('board'));
-      table.draw(data, {showRowNumber: true, width: '100%', height: 'auto'});
-    });
-  }
+    const questions = [
+      {
+        question: "What is the total supply limit of Bitcoin?",
+        answers: ["21 million", "100 million", "Unlimited", "50 million"],
+        correct: "21 million"
+      },
+      {
+        question: "Which network has the highest USDT circulation?",
+        answers: ["Ethereum", "Tron", "Binance Smart Chain", "Solana"],
+        correct: "Tron"
+      },
+      {
+        question: "What consensus algorithm does Ethereum use after The Merge?",
+        answers: ["Proof of Stake", "Proof of Work", "Delegated PoS", "Proof of Authority"],
+        correct: "Proof of Stake"
+      },
+      {
+        question: "What is a cold wallet?",
+        answers: ["A wallet stored offline", "A wallet with limited funds", "A wallet with no fees", "A hot wallet on your phone"],
+        correct: "A wallet stored offline"
+      },
+      {
+        question: "Which coin is privacy-focused?",
+        answers: ["Monero", "Litecoin", "Cardano", "Chainlink"],
+        correct: "Monero"
+      }
+    ];
 
-  function showResult(score) {
-    document.getElementById("result").classList.remove("hidden");
-    document.getElementById("result").textContent = ``;
-    document.getElementById("submit-form").classList.remove("hidden");
-    document.getElementById("play-again-btn").style.display = 'inline-block';
-    questionEl.classList.add("hidden");
-    answersEl.classList.add("hidden");
-  }
+    const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
+    const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT 10");
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query}`;
 
-  function submitScore() {
-    const name = document.getElementById("username").value;
-    const score = document.getElementById("score-display").textContent;
-    if (!name) return alert("Please enter your name");
+    google.charts.load('current', {'packages':['table']});
+    google.charts.setOnLoadCallback(drawTable);
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzIgpuRSjGmTrVFezwFHftsfcRk0OYlLJrLq6Wy0KfMhRrWAOSql9RcvruMAQOvgbqBWQ/exec";
-    fetch(scriptURL, {
-      method: "POST",
-      body: new URLSearchParams({ name, score })
-    })
-    .then(res => {
-      document.getElementById("submit-msg").textContent = "Score submitted!";
-      drawTable();
-      setTimeout(() => {
-        location.reload();
-      }, 1500);
-    })
-    .catch(err => document.getElementById("submit-msg").textContent = "Failed to submit.");
-  }
+    function drawTable() {
+      const query = new google.visualization.Query(url);
+      query.send(function(response) {
+        const data = response.getDataTable();
+        const table = new google.visualization.Table(document.getElementById('board'));
+        table.draw(data, {showRowNumber: true, width: '100%', height: 'auto'});
+      });
+    }
 
-  function startGame() {
-    document.querySelector('.quiz-container').style.display = 'block';
-    document.getElementById('start-container').style.display = 'none';
-    loadQuestion();
-    startTimer();
-  }
-</script>
+    function showResult(score) {
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").textContent = ``;
+      document.getElementById("submit-form").classList.remove("hidden");
+      document.getElementById("play-again-btn").style.display = 'inline-block';
+      questionEl.classList.add("hidden");
+      answersEl.classList.add("hidden");
+    }
+
+    function submitScore() {
+      const name = document.getElementById("username").value;
+      const score = document.getElementById("score-display").textContent;
+      if (!name) return alert("Please enter your name");
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzIgpuRSjGmTrVFezwFHftsfcRk0OYlLJrLq6Wy0KfMhRrWAOSql9RcvruMAQOvgbqBWQ/exec";
+      fetch(scriptURL, {
+        method: "POST",
+        body: new URLSearchParams({ name, score })
+      })
+      .then(res => {
+        document.getElementById("submit-msg").textContent = "Score submitted!";
+        drawTable();
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      })
+      .catch(err => document.getElementById("submit-msg").textContent = "Failed to submit.");
+    }
+
+    function startGame() {
+      document.querySelector('.quiz-container').style.display = 'block';
+      document.getElementById('start-container').style.display = 'none';
+      loadQuestion();
+      startTimer();
+    }
+  </script>
 </body>
 </html>
