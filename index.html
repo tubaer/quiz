@@ -21,32 +21,33 @@
       font-family: 'Onest', sans-serif;
       background: #03111C;
       color: #E6EDE4;
-      /* центрируем основной контейнер по горизонтали */
       display: flex;
       justify-content: center;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* Общий контейнер для всего контента:
-       max-width = 600px включает и padding, 
-       поэтому реальная общая ширина не превысит 600px */
+    /* Общий контейнер для контента */
     .app-container {
       width: 100%;
       max-width: 600px;
       margin: 0 auto;
-      padding: 20px 20px 40px; /* любые нужные отступы */
+      padding: 20px 20px 40px;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     /* Заголовок */
     h1 {
-      margin-top: 0; /* так как уже есть padding у .app-container */
+      margin-top: 0;
       font-size: 36px;
       color: #E6EDE4;
     }
 
     /* Универсальные стили для кнопок */
     button {
-      width: 100%;         /* Растягиваем на всю ширину контейнера */
+      width: 100%;
       display: block;
       background: #D5D931;
       color: #03111C;
@@ -56,17 +57,17 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin: 0;           /* убираем внешние отступы */
+      margin: 0;
     }
 
-    /* Квиз (вопросы/ответы) */
+    /* Квиз */
     .quiz-container {
-      width: 100%;         /* тоже 100% от родителя (уже ограничено 600px) */
+      width: 100%;
       background: #1F242F;
       border-radius: 8px;
       margin-top: 20px;
       padding: 30px;
-      display: none;       /* изначально скрыт */
+      display: none;
     }
 
     .score-time {
@@ -82,7 +83,7 @@
       margin-bottom: 24px;
     }
 
-    /* Ответы (кнопки внутри квиза) */
+    /* Ответы */
     .answers button {
       background: #161B26;
       color: #E6EDE4;
@@ -111,14 +112,14 @@
       font-weight: bold;
     }
 
-    /* Блок с формой отправки */
+    /* Форма отправки */
     #submit-form {
       margin-top: 20px;
     }
 
     /* Лидерборд */
     #leaderboard {
-      width: 100%;         /* опять же 100% от .app-container */
+      width: 100%;
       background-color: #1F242F;
       border-radius: 8px;
       margin-top: 20px;
@@ -138,23 +139,26 @@
 
     /* Background стили */
     .background {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
+      width: 100%;
+      /* Увеличиваем высоту, чтобы полосы были в зоне видимости */
+      height: 2500px;
+      z-index: 0;
       background: #03111C;
       overflow: hidden;
-      transform: rotate(-180deg);
-      transform-origin: top left;
+      /* Убираем поворот, чтобы координаты полос соответствовали видимой области */
+      /* transform: rotate(-180deg);
+      transform-origin: top left; */
     }
     .stripe {
       position: absolute;
       width: 90.03px;
       height: 1473.23px;
-      transform: rotate(180deg);
-      transform-origin: top left;
+      /* Если фон не повёрнут, можно убрать поворот у полос */
+      /* transform: rotate(180deg);
+      transform-origin: top left; */
       background: linear-gradient(88deg, #FBFF3A 0%, #03111C 100%);
     }
     .blur-circle {
@@ -201,7 +205,6 @@
     <div class="stripe" style="left: 1260.24px; top: 2187.03px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
     <div class="stripe" style="left: 1350.12px; top: 2316px;   background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
     <div class="stripe" style="left: 1440px;   top: 2161.24px; background: linear-gradient(86deg, #FBFF3A 0%, #03111C 100%);"></div>
-    
     <div class="blur-circle first"></div>
     <div class="blur-circle second"></div>
   </div>
@@ -209,8 +212,7 @@
   <div class="app-container">
     <!-- Лого и заголовок -->
     <div>
-      <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436"
-           alt="Logo" style="height: 24px;">
+      <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 24px;">
     </div>
     <h1>Crypto Quiz</h1>
 
@@ -258,7 +260,7 @@
       </div>
     </div>
 
-    <!-- Кнопка "Play Again" (появляется после окончания квиза) -->
+    <!-- Кнопка "Play Again" -->
     <div style="margin-top: 20px;">
       <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
     </div>
