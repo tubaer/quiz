@@ -114,8 +114,6 @@
 
 <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
 <script>
-  const questions = [...document.querySelectorAll('script')].find(s => s.textContent.includes('question:')).textContent.match(/\{\s*question:.*?\}/gs).map(q => eval('(' + q + ')'));
-
   let current = 0;
   let score = 0;
   let timeLeft = 60;
