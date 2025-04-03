@@ -25,21 +25,28 @@
     }
     button {
       font-family: 'Onest', sans-serif;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
     }
+    /* Контейнер под кнопку Play */
+    #start-container {
+      width: 90%;
+      max-width: 600px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    /* Кнопка Play */
     #start-container button {
+      width: 100%;               /* Занимает всю ширину родителя */
       background: #D5D931;
       color: #03111C;
       padding: 14px 0;
       font-size: 16px;
       font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 90%;
-      max-width: 600px;
-      display: block;
       margin: 0 auto;
     }
+    /* Основной блок с вопросами */
     .quiz-container {
       background: #1F242F;
       padding: 30px;
@@ -67,7 +74,6 @@
       color: #E6EDE4;
       border: 1px solid #1F242F;
       border-radius: 8px;
-      cursor: pointer;
       transition: background 0.2s, color 0.2s;
       text-align: left;
       font-weight: 500;
@@ -98,18 +104,19 @@
       margin-top: 20px;
       text-align: center;
     }
+    /* Кнопка Play Again */
     #play-again-btn {
+      width: 90%;               /* Также растягиваем, как и контейнер */
+      max-width: 600px;
       padding: 14px 0;
       font-size: 16px;
-      cursor: pointer;
-      display: none;
+      font-weight: bold;
       background: #D5D931;
+      color: #03111C;
       border: none;
       border-radius: 8px;
-      color: #03111C;
-      font-weight: bold;
-      width: 90%;
-      max-width: 600px;
+      display: none;
+      margin: 0 auto;           /* Центровка, если нужно */
     }
     #leaderboard {
       margin-top: 50px;
@@ -139,10 +146,10 @@
     <img src="https://app.debridge.finance/assets/images/logo/debridge-dark.svg?dgsg=436" alt="Logo" style="height: 24px;"/>
   </div>
   <h1>Crypto Quiz</h1>
-  <div id="start-container" style="margin-top:20px;text-align:center;">
+  <div id="start-container">
     <button onclick="startGame()">Play</button>
   </div>
-  <div class="quiz-container">
+  <div class="quiz-container" style="display:none;">
     <div class="score-time">
       <div>Score:</div>
       <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
@@ -235,6 +242,7 @@
     }
 
     window.onload = () => {
+      // Прячем блок викторины при загрузке, пока не нажмут "Play"
       document.querySelector('.quiz-container').style.display = 'none';
       document.getElementById('start-container').style.display = 'block';
     };
