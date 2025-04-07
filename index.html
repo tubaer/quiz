@@ -43,17 +43,21 @@
       color: #E6EDE4;
     }
 
+    /* Универсальный стиль для кнопок (можно править под себя) */
     button {
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+    }
+
+    /* Кнопка Play на первом экране */
+    #start-container button {
       width: 100%;
-      display: block;
       background: #D5D931;
       color: #03111C;
       padding: 14px 0;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
       margin: 0;
     }
 
@@ -220,7 +224,6 @@
     <div class="quiz-container">
       <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
       <div class="score-time">
-        <!-- Поднимаем выше (top: -60px), чтобы ещё сильнее выступал сверху -->
         <img src="Layer_1.svg" alt="Мой персонаж"
              style="position: absolute; top: -60px; right: -50px; width: 160px; height: auto; z-index: 2;">
         <div>Score:</div>
@@ -232,6 +235,8 @@
       <div class="answers" id="answers"></div>
 
       <div class="result hidden" id="result"></div>
+
+      <!-- Блок для ввода имени, кнопки Submit и Play Again -->
       <div class="hidden" id="submit-form">
         <h3>Submit your score</h3>
         <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
@@ -245,24 +250,52 @@
             color: #E6EDE4;
             outline: none;
           "/>
+
+          <!-- КНОПКА SUBMIT (стиль) -->
           <button onclick="submitScore()" style="
+            display: inline-flex;
+            height: 40px;
+            padding: 10px 16px;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            border-radius: 4px;
+            border: 1px solid #2A313F;
+            background: #161B26;
+            color: #E6EDE4;
+            text-transform: uppercase;
+          ">
+            Submit
+            <!-- Иконка-стрелка (можно подставить свою svg/png) -->
+            <img src="Arrow_Left_MD.svg" alt="arrow" style="
+              width: 16px;
+              height: 16px;
+              transform: rotate(180deg); /* Повернуть, чтобы смотрела вправо */
+            ">
+          </button>
+        </div>
+
+        <div id="submit-msg" style="margin-top: 10px;"></div>
+
+        <!-- КНОПКА PLAY AGAIN ВНУТРИ submit-form -->
+        <div style="margin-top: 20px;">
+          <button id="play-again-btn" onclick="location.reload()" style="
+            display:none;
             background: #D5D931;
             color: #03111C;
+            width: 100%;
+            padding: 14px 0;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            padding: 14px 24px;
-          ">Submit</button>
+          ">
+            Play Again
+          </button>
         </div>
-        <div id="submit-msg" style="margin-top: 10px;"></div>
       </div>
-    </div>
-
-    <!-- Кнопка "Play Again" -->
-    <div style="margin-top: 20px;">
-      <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
     </div>
 
     <!-- Лидерборд -->
@@ -391,7 +424,10 @@
       document.getElementById("result").classList.remove("hidden");
       document.getElementById("result").textContent = "";
       document.getElementById("submit-form").classList.remove("hidden");
+
+      // Показываем кнопку Play Again
       document.getElementById("play-again-btn").style.display = 'block';
+
       questionEl.classList.add("hidden");
       answersEl.classList.add("hidden");
     }
