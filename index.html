@@ -122,6 +122,30 @@
       border-radius: 8px;
       margin-top: 20px;
       padding: 20px;
+      max-height: 400px;
+      overflow: hidden;
+    }
+    
+    #leaderboard-content {
+      max-height: 330px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #2A313F #161B26;
+    }
+    
+    /* Стили для полосы прокрутки */
+    #leaderboard-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    #leaderboard-content::-webkit-scrollbar-track {
+      background: #161B26;
+      border-radius: 4px;
+    }
+    
+    #leaderboard-content::-webkit-scrollbar-thumb {
+      background-color: #2A313F;
+      border-radius: 4px;
     }
     
     #leaderboard h2 {
@@ -179,21 +203,26 @@
     }
     
     /* Cup icons for top 3 */
-    .rank-icon {
-      display: inline-flex;
-      margin-right: 10px;
+    .rank-cup {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      display: inline-block;
     }
     
-    .rank-1 {
-      color: #FFD700; /* Gold */
+    .rank-1 .rank-cup {
+      /* Золотой (оставляем как есть) */
+      filter: none;
     }
     
-    .rank-2 {
-      color: #C0C0C0; /* Silver */
+    .rank-2 .rank-cup {
+      /* Серебряный */
+      filter: brightness(0) saturate(100%) invert(91%) sepia(0%) saturate(22%) hue-rotate(155deg) brightness(95%) contrast(96%);
     }
     
-    .rank-3 {
-      color: #CD7F32; /* Bronze */
+    .rank-3 .rank-cup {
+      /* Бронзовый */
+      filter: brightness(0) saturate(100%) invert(56%) sepia(14%) saturate(1267%) hue-rotate(12deg) brightness(87%) contrast(86%);
     }
   
     /* Loading state */
@@ -395,6 +424,10 @@
     google.charts.load('current', {'packages':['table']});
     google.charts.setOnLoadCallback(drawCustomLeaderboard);
 
+    // Увеличиваем лимит количества отображаемых записей в лидерборде
+    const leaderboardLimit = 20; // Можно увеличить для отображения большего количества записей
+    const query = encodeURIComponent(`SELECT A, B ORDER BY B DESC LIMIT ${leaderboardLimit}`);
+
     // Функция для отрисовки пользовательского лидерборда
     function drawCustomLeaderboard() {
       const leaderboardContent = document.getElementById('leaderboard-content');
@@ -441,9 +474,18 @@
               rankCell.className = 'leaderboard-cell rank';
               
               if (index < 3) {
-                const rankIcon = document.createElement('i');
-                rankIcon.className = `icomoon-cup rank-icon rank-${index + 1}`;
-                rankCell.appendChild(rankIcon);
+                // Добавляем div с классом для стилизации
+                const rankWrapper = document.createElement('div');
+                rankWrapper.className = `rank-${index + 1}`;
+                
+                // Добавляем иконку кубка из SVG
+                const cupIcon = document.createElement('img');
+                cupIcon.src = 'https://cdn.debridge.finance/images/cup.svg';
+                cupIcon.className = 'rank-cup';
+                cupIcon.alt = `Rank ${index + 1}`;
+                
+                rankWrapper.appendChild(cupIcon);
+                rankCell.appendChild(rankWrapper);
               } else {
                 rankCell.textContent = index + 1;
               }
