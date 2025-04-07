@@ -257,12 +257,12 @@
           ">Submit</button>
         </div>
         <div id="submit-msg" style="margin-top: 10px;"></div>
-      </div>
-    </div>
 
-    <!-- Кнопка "Play Again" -->
-    <div style="margin-top: 20px;">
-      <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
+        <!-- Перенесли кнопку Play Again сюда -->
+        <div style="margin-top: 20px;">
+          <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
+        </div>
+      </div>
     </div>
 
     <!-- Лидерборд -->
@@ -391,6 +391,7 @@
       document.getElementById("result").classList.remove("hidden");
       document.getElementById("result").textContent = "";
       document.getElementById("submit-form").classList.remove("hidden");
+      // Показываем кнопку "Play Again"
       document.getElementById("play-again-btn").style.display = 'block';
       questionEl.classList.add("hidden");
       answersEl.classList.add("hidden");
