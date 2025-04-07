@@ -126,6 +126,16 @@
       overflow: hidden;
     }
     
+    #leaderboard h2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      color: #E6EDE4;
+    }
+    
     #leaderboard-content {
       max-height: 330px;
       overflow-y: auto;
@@ -146,16 +156,6 @@
     #leaderboard-content::-webkit-scrollbar-thumb {
       background-color: #2A313F;
       border-radius: 4px;
-    }
-    
-    #leaderboard h2 {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-weight: 600;
-      margin: 0 0 20px 0;
-      color: #E6EDE4;
     }
     
     .leaderboard-table {
@@ -418,15 +418,13 @@
 
     // Google Sheets
     const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
-    const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT 10");
+    // Увеличиваем лимит количества отображаемых записей в лидерборде
+    const leaderboardLimit = 20; // Можно увеличить для отображения большего количества записей
+    const query = encodeURIComponent(`SELECT A, B ORDER BY B DESC LIMIT ${leaderboardLimit}`);
     const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query}`;
 
     google.charts.load('current', {'packages':['table']});
     google.charts.setOnLoadCallback(drawCustomLeaderboard);
-
-    // Увеличиваем лимит количества отображаемых записей в лидерборде
-    const leaderboardLimit = 20; // Можно увеличить для отображения большего количества записей
-    const query = encodeURIComponent(`SELECT A, B ORDER BY B DESC LIMIT ${leaderboardLimit}`);
 
     // Функция для отрисовки пользовательского лидерборда
     function drawCustomLeaderboard() {
@@ -437,81 +435,94 @@
         .then(response => response.text())
         .then(data => {
           // Извлекаем JSON из ответа
-          const jsonData = JSON.parse(data.substring(47).slice(0, -2));
+          // Ищем первую открывающую скобку и последнюю закрывающую
+          const jsonStart = data.indexOf('{');
+          const jsonEnd = data.lastIndexOf('}') + 1;
           
-          if (jsonData.status === 'ok') {
-            const table = document.createElement('table');
-            table.className = 'leaderboard-table';
+          if (jsonStart >= 0 && jsonEnd > 0) {
+            const jsonData = JSON.parse(data.substring(jsonStart, jsonEnd));
             
-            // Создаем заголовок таблицы
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            
-            const headers = ['#', 'Name', 'Score'];
-            headers.forEach(headerText => {
-              const th = document.createElement('th');
-              th.className = 'leaderboard-header';
-              th.textContent = headerText;
-              if (headerText === 'Score') {
-                th.style.textAlign = 'right';
+            if (jsonData.status === 'ok') {
+              const table = document.createElement('table');
+              table.className = 'leaderboard-table';
+              
+              // Создаем заголовок таблицы
+              const thead = document.createElement('thead');
+              const headerRow = document.createElement('tr');
+              
+              const headers = ['#', 'Name', 'Score'];
+              headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.className = 'leaderboard-header';
+                th.textContent = headerText;
+                if (headerText === 'Score') {
+                  th.style.textAlign = 'right';
+                }
+                headerRow.appendChild(th);
+              });
+              
+              thead.appendChild(headerRow);
+              table.appendChild(thead);
+              
+              // Создаем тело таблицы
+              const tbody = document.createElement('tbody');
+              
+              // Обрабатываем строки из ответа Google Sheets
+              if (jsonData.table && jsonData.table.rows) {
+                jsonData.table.rows.forEach((row, index) => {
+                  if (!row.c || !row.c[0]) return; // Пропускаем пустые строки
+                  
+                  const tr = document.createElement('tr');
+                  tr.className = 'leaderboard-row';
+                  
+                  // Ячейка с рангом и иконкой для топ-3
+                  const rankCell = document.createElement('td');
+                  rankCell.className = 'leaderboard-cell rank';
+                  
+                  if (index < 3) {
+                    // Добавляем div с классом для стилизации
+                    const rankWrapper = document.createElement('div');
+                    rankWrapper.className = `rank-${index + 1}`;
+                    
+                    // Добавляем иконку кубка из SVG
+                    const cupIcon = document.createElement('img');
+                    cupIcon.src = 'https://cdn.debridge.finance/images/cup.svg';
+                    cupIcon.className = 'rank-cup';
+                    cupIcon.alt = `Rank ${index + 1}`;
+                    
+                    rankWrapper.appendChild(cupIcon);
+                    rankCell.appendChild(rankWrapper);
+                  } else {
+                    rankCell.textContent = index + 1;
+                  }
+                  
+                  tr.appendChild(rankCell);
+                  
+                  // Ячейка с именем
+                  const nameCell = document.createElement('td');
+                  nameCell.className = 'leaderboard-cell name';
+                  nameCell.textContent = row.c[0] && row.c[0].v ? row.c[0].v : 'Anonymous';
+                  tr.appendChild(nameCell);
+                  
+                  // Ячейка с очками
+                  const scoreCell = document.createElement('td');
+                  scoreCell.className = 'leaderboard-cell score';
+                  scoreCell.textContent = row.c[1] && row.c[1].v ? row.c[1].v : '0';
+                  tr.appendChild(scoreCell);
+                  
+                  tbody.appendChild(tr);
+                });
               }
-              headerRow.appendChild(th);
-            });
-            
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            
-            // Создаем тело таблицы
-            const tbody = document.createElement('tbody');
-            
-            // Обрабатываем строки из ответа Google Sheets
-            jsonData.table.rows.forEach((row, index) => {
-              const tr = document.createElement('tr');
-              tr.className = 'leaderboard-row';
               
-              // Ячейка с рангом и иконкой для топ-3
-              const rankCell = document.createElement('td');
-              rankCell.className = 'leaderboard-cell rank';
-              
-              if (index < 3) {
-                // Добавляем div с классом для стилизации
-                const rankWrapper = document.createElement('div');
-                rankWrapper.className = `rank-${index + 1}`;
-                
-                // Добавляем иконку кубка из SVG
-                const cupIcon = document.createElement('img');
-                cupIcon.src = 'https://cdn.debridge.finance/images/cup.svg';
-                cupIcon.className = 'rank-cup';
-                cupIcon.alt = `Rank ${index + 1}`;
-                
-                rankWrapper.appendChild(cupIcon);
-                rankCell.appendChild(rankWrapper);
-              } else {
-                rankCell.textContent = index + 1;
-              }
-              
-              tr.appendChild(rankCell);
-              
-              // Ячейка с именем
-              const nameCell = document.createElement('td');
-              nameCell.className = 'leaderboard-cell name';
-              nameCell.textContent = row.c[0] ? row.c[0].v : 'Anonymous';
-              tr.appendChild(nameCell);
-              
-              // Ячейка с очками
-              const scoreCell = document.createElement('td');
-              scoreCell.className = 'leaderboard-cell score';
-              scoreCell.textContent = row.c[1] ? row.c[1].v : '0';
-              tr.appendChild(scoreCell);
-              
-              tbody.appendChild(tr);
-            });
-            
-            table.appendChild(tbody);
-            leaderboardContent.innerHTML = '';
-            leaderboardContent.appendChild(table);
+              table.appendChild(tbody);
+              leaderboardContent.innerHTML = '';
+              leaderboardContent.appendChild(table);
+            } else {
+              leaderboardContent.innerHTML = '<div>Failed to load leaderboard data.</div>';
+            }
           } else {
-            leaderboardContent.innerHTML = '<div>Failed to load leaderboard data.</div>';
+            console.error('Invalid data format from Google Sheets');
+            leaderboardContent.innerHTML = '<div>Failed to load leaderboard data. Invalid data format.</div>';
           }
         })
         .catch(error => {
