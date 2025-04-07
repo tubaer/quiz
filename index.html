@@ -43,21 +43,17 @@
       color: #E6EDE4;
     }
 
-    /* Универсальный стиль для кнопок */
-    button {
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      border-radius: 8px;
-    }
-
-    /* Кнопка Play на первом экране */
+    /* Кнопка "Play" (только на первом экране) */
     #start-container button {
       width: 100%;
       background: #D5D931;
       color: #03111C;
       padding: 14px 0;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
       margin: 0;
     }
 
@@ -87,6 +83,7 @@
       margin-bottom: 24px;
     }
 
+    /* СТАРЫЙ СТИЛЬ КНОПОК ОТВЕТОВ */
     .answers button {
       background: #161B26;
       color: #E6EDE4;
@@ -240,37 +237,55 @@
       <div class="hidden" id="submit-form">
         <h3>Submit your score</h3>
         <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
-          <input id="username" type="text" placeholder="Your name" style="
-            flex: 1;
-            padding: 14px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #2A313F;
-            background: #1F242F;
-            color: #E6EDE4;
-            outline: none;
-          "/>
 
-          <!-- КНОПКА SUBMIT (стиль) с иконкой стрелки -->
-          <button onclick="submitScore()" style="
-            display: inline-flex;
-            height: 40px;
-            padding: 10px 16px;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            border-radius: 4px;
-            border: 1px solid #2A313F;
-            background: #161B26;
-            color: #E6EDE4;
-            text-transform: uppercase;
-          ">
+          <!-- Поле ввода имени -->
+          <input
+            id="username"
+            type="text"
+            placeholder="Your name"
+            style="
+              height: 40px;
+              padding: 0 16px;
+              line-height: 40px;
+              font-size: 16px;
+              border-radius: 8px;
+              border: 1px solid #2A313F;
+              background: #161B26;
+              color: #E6EDE4;
+              outline: none;
+            "
+          />
+
+          <!-- КНОПКА SUBMIT (ТОЛЬКО ОНА!) -->
+          <button
+            id="submit-btn"
+            onclick="submitScore()"
+            style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              height: 40px;
+              padding: 0 16px;
+              font-size: 16px;
+              border-radius: 8px;
+              border: 1px solid #2A313F;
+              background: transparent; /* нет заливки, будет сливаться с фоном */
+              color: #E6EDE4;
+              text-transform: uppercase;
+            "
+          >
             Submit
-            <img src="./Arrow_Left_MD.svg" alt="arrow" style="
-              width: 16px;
-              height: 16px;
-              transform: rotate(180deg);
-            ">
+            <!-- Иконка, повёрнутая на 180°, чтобы указывать вправо -->
+            <img
+              src="./Arrow_Left_MD.svg"
+              alt="arrow"
+              style="
+                width: 16px;
+                height: 16px;
+                transform: rotate(180deg);
+              "
+            >
           </button>
         </div>
 
@@ -278,18 +293,22 @@
 
         <!-- КНОПКА PLAY AGAIN, добавленная внутрь блока формы -->
         <div style="margin-top: 20px;">
-          <button id="play-again-btn" onclick="location.reload()" style="
-            display: none;
-            background: #D5D931;
-            color: #03111C;
-            width: 100%;
-            padding: 14px 0;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-          ">
+          <button
+            id="play-again-btn"
+            onclick="location.reload()"
+            style="
+              display: none;
+              background: #D5D931;
+              color: #03111C;
+              width: 100%;
+              padding: 14px 0;
+              font-size: 16px;
+              font-weight: 600;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+            "
+          >
             Play Again
           </button>
         </div>
