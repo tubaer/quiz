@@ -43,7 +43,7 @@
       color: #E6EDE4;
     }
 
-    /* Кнопка "Play" (только на первом экране) */
+    /* Кнопка Play (на первом экране) */
     #start-container button {
       width: 100%;
       background: #D5D931;
@@ -66,7 +66,7 @@
       padding: 30px;
       display: none;
       position: relative;
-      overflow: visible; /* Чтобы персонаж мог выступать за границы */
+      overflow: visible;
     }
 
     .score-time {
@@ -83,7 +83,7 @@
       margin-bottom: 24px;
     }
 
-    /* СТАРЫЙ СТИЛЬ КНОПОК ОТВЕТОВ */
+    /* Ответные кнопки (точно как в вашем примере) */
     .answers button {
       background: #161B26;
       color: #E6EDE4;
@@ -141,7 +141,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 1200px; 
+      height: 1200px;
       z-index: 0;
       background: #03111C;
       overflow: hidden;
@@ -160,7 +160,6 @@
       transform: rotate(-15deg);
       transform-origin: bottom left;
     }
-
     .blur-circle {
       position: absolute;
       border-radius: 9999px;
@@ -169,18 +168,18 @@
       opacity: 0.6;
     }
     .blur-circle.first {
-      width: 400px; 
+      width: 400px;
       height: 400px;
       left: -100px;
-      top: -50px; 
+      top: -50px;
       box-shadow: 0 0 100px #FBFF3A;
       filter: blur(100px);
     }
     .blur-circle.second {
-      width: 400px; 
+      width: 400px;
       height: 400px;
       left: 300px;
-      top: 600px; 
+      top: 600px;
       box-shadow: 0 0 100px #FBFF3A;
       filter: blur(100px);
     }
@@ -219,10 +218,10 @@
 
     <!-- Квиз -->
     <div class="quiz-container">
-      <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
+      <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (маленький) возле счётчика -->
       <div class="score-time">
         <img src="Layer_1.svg" alt="Мой персонаж"
-             style="position: absolute; top: -60px; right: -50px; width: 160px; height: auto; z-index: 2;">
+             style="position: absolute; top: 0; right: 0; width: 80px; height: auto; z-index: 2;">
         <div>Score:</div>
         <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
         <div>Time: <span id="time">7</span> sec</div>
@@ -233,86 +232,57 @@
 
       <div class="result hidden" id="result"></div>
 
-      <!-- Форма для ввода имени, кнопка Submit и кнопка Play Again -->
+      <!-- Форма для ввода имени и кнопки submit -->
       <div class="hidden" id="submit-form">
         <h3>Submit your score</h3>
-        <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
-
-          <!-- Поле ввода имени -->
-          <input
-            id="username"
-            type="text"
-            placeholder="Your name"
-            style="
-              height: 40px;
-              padding: 0 16px;
-              line-height: 40px;
-              font-size: 16px;
-              border-radius: 8px;
-              border: 1px solid #2A313F;
-              background: #161B26;
-              color: #E6EDE4;
-              outline: none;
-            "
-          />
-
-          <!-- КНОПКА SUBMIT (ТОЛЬКО ОНА!) -->
-          <button
-            id="submit-btn"
-            onclick="submitScore()"
-            style="
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              gap: 8px;
-              height: 40px;
-              padding: 0 16px;
-              font-size: 16px;
-              border-radius: 8px;
-              border: 1px solid #2A313F;
-              background: transparent; /* нет заливки, будет сливаться с фоном */
-              color: #E6EDE4;
-              text-transform: uppercase;
-            "
-          >
-            Submit
-            <!-- Иконка, повёрнутая на 180°, чтобы указывать вправо -->
-            <img
-              src="./Arrow_Left_MD.svg"
-              alt="arrow"
-              style="
-                width: 16px;
-                height: 16px;
-                transform: rotate(180deg);
-              "
-            >
+        <div style="max-width: 500px; margin: 10px auto 0; display: block;">
+          <!-- Поле ввода занимает всю ширину -->
+          <input id="username" type="text" placeholder="Your name" style="
+            width: 100%;
+            height: 40px;
+            padding: 0 16px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #2A313F;
+            background: #161B26;
+            color: #E6EDE4;
+            outline: none;
+            box-sizing: border-box;
+          "/>
+        </div>
+        <div style="max-width: 500px; margin: 10px auto 0; display: block;">
+          <!-- Кнопка submit занимает всю ширину -->
+          <button onclick="submitScore()" style="
+            width: 100%;
+            height: 40px;
+            padding: 0 16px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #2A313F;
+            background: transparent;
+            color: #E6EDE4;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          ">
+            submit
+            <!-- Иконка, перевёрнутая на 180 градусов (чтобы указывать вправо) -->
+            <img src="./Arrow_Left_MD.svg" alt="arrow" style="
+              width: 16px;
+              height: 16px;
+              transform: rotate(180deg);
+            ">
           </button>
         </div>
-
-        <div id="submit-msg" style="margin-top: 10px;"></div>
-
-        <!-- КНОПКА PLAY AGAIN, добавленная внутрь блока формы -->
-        <div style="margin-top: 20px;">
-          <button
-            id="play-again-btn"
-            onclick="location.reload()"
-            style="
-              display: none;
-              background: #D5D931;
-              color: #03111C;
-              width: 100%;
-              padding: 14px 0;
-              font-size: 16px;
-              font-weight: 600;
-              border: none;
-              border-radius: 8px;
-              cursor: pointer;
-            "
-          >
-            Play Again
-          </button>
-        </div>
+        <div id="submit-msg" style="max-width: 500px; margin: 10px auto 0; text-align: center;"></div>
       </div>
+    </div>
+
+    <!-- Кнопка "Play Again" (если требуется, можно оставить вне submit-form) -->
+    <div style="margin-top: 20px;">
+      <button id="play-again-btn" onclick="location.reload()" style="display:none; width: 100%; background: #D5D931; color: #03111C; padding: 14px 0; font-size: 16px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer;">Play Again</button>
     </div>
 
     <!-- Лидерборд -->
@@ -440,10 +410,7 @@
       document.getElementById("result").classList.remove("hidden");
       document.getElementById("result").textContent = "";
       document.getElementById("submit-form").classList.remove("hidden");
-
-      // Показываем кнопку Play Again
       document.getElementById("play-again-btn").style.display = 'block';
-
       questionEl.classList.add("hidden");
       answersEl.classList.add("hidden");
     }
