@@ -66,12 +66,14 @@
       padding: 30px;
       display: none;
       position: relative;
+      /* overflow оставляем видимым, чтобы персонаж мог выступать за край */
+      overflow: visible;
     }
 
     .score-time {
       font-size: 26px;
       margin-bottom: 30px;
-      position: relative; /* чтобы позиционировать маленького маскота внутри */
+      position: relative; /* для абсолютного позиционирования персонажа внутри */
     }
     .score-time div {
       margin: 10px 0;
@@ -217,13 +219,11 @@
 
     <!-- Квиз -->
     <div class="quiz-container">
-      <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (МАЛЕНЬКИЙ) -->
-      <!-- Вместо «верхнего» маскота оставляем только маленького возле счётчика -->
+      <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
       <div class="score-time">
-        <!-- Маскот поменьше (80px) -->
+        <!-- Увеличен в 2 раза (160px) и смещён вправо (right: -50px) для выхода за край -->
         <img src="Layer_1.svg" alt="Мой персонаж"
-             style="position: absolute; top: 0; right: 0; width: 80px; height: auto; z-index: 2;">
-
+             style="position: absolute; top: 0; right: -50px; width: 160px; height: auto; z-index: 2;">
         <div>Score:</div>
         <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
         <div>Time: <span id="time">7</span> sec</div>
