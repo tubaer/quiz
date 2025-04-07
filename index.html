@@ -44,10 +44,14 @@
     }
 
     button {
-      /* Убираем общий стиль ширины, чтобы не влиять на все кнопки сразу */
+      width: 100%;
       display: block;
+      background: #D5D931;
+      color: #03111C;
+      padding: 14px 0;
       font-size: 16px;
       font-weight: 600;
+      border: none;
       border-radius: 8px;
       cursor: pointer;
       margin: 0;
@@ -92,7 +96,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      width: 100%;
     }
     .answers button:hover {
       background: #D5D931;
@@ -180,41 +183,6 @@
       box-shadow: 0 0 100px #FBFF3A;
       filter: blur(100px);
     }
-
-    /* ИЗМЕНЕНО: стили для поля ввода (fill) и кнопки сабмит (hug) */
-    .submit-container {
-      max-width: 500px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .name-input {
-      flex: 1; /* Заполняет доступное пространство */
-      padding: 14px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #2A313F;
-      background: #161B26; /* ИЗМЕНЕНО */
-      color: #E6EDE4;
-      outline: none;
-    }
-    .submit-btn {
-      /* "Hug" содержимое — без фиксированной ширины */
-      background: transparent; /* ИЗМЕНЕНО: нет заливки */
-      border: 1px solid #1F242F; /* ИЗМЕНЕНО: обводка #1F242F */
-      color: #E6EDE4; /* Цвет текста */
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      padding: 8px 16px; /* Небольшие отступы вокруг текста */
-    }
-    .submit-btn:hover {
-      background: #1F242F;
-    }
   </style>
 </head>
 <body>
@@ -245,7 +213,7 @@
 
     <!-- Кнопка "Play" -->
     <div id="start-container" style="margin-top:20px;">
-      <button onclick="startGame()" style="width:100%; background:#D5D931; color:#03111C;">Play</button>
+      <button onclick="startGame()">Play</button>
     </div>
 
     <!-- Квиз -->
@@ -266,22 +234,34 @@
       <div class="result hidden" id="result"></div>
       <div class="hidden" id="submit-form">
         <h3>Submit your score</h3>
-
-        <!-- ИЗМЕНЕНО: контейнер, поле, кнопка сабмит -->
-        <div class="submit-container">
-          <input
-            id="username"
-            type="text"
-            placeholder="Your name"
-            class="name-input"
-          />
-          <button class="submit-btn" onclick="submitScore()">Submit</button>
+        <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
+          <input id="username" type="text" placeholder="Your name" style="
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #2A313F;
+            background: #161B26;
+            color: #E6EDE4;
+            outline: none;
+          "/>
+          <button onclick="submitScore()" style="
+            background: transparent;
+            color: #E6EDE4;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #1F242F;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 14px 24px;
+            width: auto;
+          ">Submit</button>
         </div>
-        
         <div id="submit-msg" style="margin-top: 10px;"></div>
 
+        <!-- Перенесли кнопку Play Again сюда -->
         <div style="margin-top: 20px;">
-          <button id="play-again-btn" onclick="location.reload()" style="display:none; width:100%; background:#D5D931; color:#03111C;">Play Again</button>
+          <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
         </div>
       </div>
     </div>
