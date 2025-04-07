@@ -65,10 +65,7 @@
       margin-top: 20px;
       padding: 30px;
       display: none;
-
-      /* Чтобы абсолютное позиционирование персонажа внутри .quiz-container 
-         относилось к этому блоку, делаем position: relative */
-      position: relative;
+      position: relative; /* чтобы позиционировать персонажа внутри */
     }
 
     .score-time {
@@ -207,9 +204,10 @@
     </div>
     <h1>Crypto Quiz</h1>
 
-    <!-- ПЕРСОНАЖ на первом экране -->
+    <!-- ПЕРСОНАЖ: ПЕРВЫЙ ЭКРАН -->
     <div style="margin: 20px 0;">
-      <img src="Layer_1.svg" alt="Мой персонаж" style="max-width: 150px; height: auto;">
+      <!-- Увеличили ширину до ~262px (1.75 * 150) -->
+      <img src="Layer_1.svg" alt="Мой персонаж" style="width: 262px; height: auto;">
     </div>
 
     <!-- Кнопка "Play" -->
@@ -219,9 +217,10 @@
 
     <!-- Квиз -->
     <div class="quiz-container">
-      <!-- ПЕРСОНАЖ на втором экране (в правом верхнем углу) -->
+      <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН -->
+      <!-- Увеличили до 140px (примерно 1.75 * 80) и сдвинули вправо на -30px -->
       <img src="Layer_1.svg" alt="Мой персонаж" 
-           style="position: absolute; top: 20px; right: 20px; width: 80px; height: auto; z-index: 2;">
+           style="position: absolute; top: 20px; right: -30px; width: 140px; height: auto; z-index: 2;">
 
       <div class="score-time">
         <div>Score:</div>
