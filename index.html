@@ -10,7 +10,7 @@
     /* Сброс отступов и установка box-sizing */
     html {
       font-size: 75%; /* Уменьшаем базовый размер шрифта до 75% */
-      zoom: 0.75; /* Применяем масштабирование 75% ко всему содержимому */
+      /* УБРАЛИ zoom: 0.75 чтобы не ломать масштабирование */
     }
     
     body {
@@ -48,8 +48,8 @@
       color: #E6EDE4;
     }
 
+    /* УБИРАЕМ глобальное button { width: 100% } и делаем обычные кнопки адаптивными */
     button {
-      width: 100%;
       display: block;
       background: #D5D931;
       color: #03111C;
@@ -60,6 +60,8 @@
       border-radius: 8px;
       cursor: pointer;
       margin: 0;
+      width: auto; /* Добавили авто-ширину по умолчанию */
+      min-width: 100px; /* Чтобы кнопка не схлопывалась */
     }
 
     /* Квиз */
@@ -86,21 +88,26 @@
       margin-bottom: 20px;
     }
 
+    /* СТРОКА С ИНПУТАМИ И КНОПКОЙ */
     .form-row {
-      display: flex; flex-wrap: nowrap; /* ДОБАВИЛИ flex-wrap: nowrap */
+      display: flex;
       width: 100%;
       gap: 8px;
       align-items: center;
+      flex-wrap: nowrap; /* ЧТОБЫ НИЧЕГО НЕ ПЕРЕНОСИЛОСЬ */
     }
 
+    /* БЛОК ИНПУТОВ, КОТОРЫЙ ДОЛЖЕН УЖИМАТЬСЯ ПРИ НЕХВАТКЕ МЕСТА */
     .form-input-area {
-      display: flex; 
-      flex: 1;
+      display: flex;
+      flex: 1 1 0;
       gap: 8px;
+      min-width: 0; /* ОЧЕНЬ ВАЖНО: позволяет ужимать инпуты */
     }
 
     .form-input-area input {
-      flex: 1;
+      flex: 1 1 0;
+      min-width: 0; /* разрешаем ужиматься, если мало места */
       padding: 12px;
       font-size: 16px;
       border-radius: 8px;
@@ -110,8 +117,8 @@
       outline: none;
     }
 
+    /* КНОПКА SUBMIT — В ОТДЕЛЬНОМ CSS, ЧТОБЫ НЕ ТЯНУЛАСЬ */
     .submit-button {
-      width: auto !important; display: inline-block !important; /* ДОБАВИЛИ переопределение! */
       background: transparent;
       color: #E6EDE4;
       font-size: 16px;
@@ -121,7 +128,7 @@
       cursor: pointer;
       padding: 12px 20px;
       white-space: nowrap;
-      min-width: 100px;
+      flex-shrink: 0; /* чтобы не ужималась */
     }
 
     .score-time {
@@ -152,6 +159,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 100%; /* Эти кнопки пусть идут на всю ширину */
     }
     .answers button:hover {
       background: #D5D931;
@@ -471,20 +479,16 @@
     const preloadedImages = {};
     
     function preloadImages() {
-      // Предзагружаем все изображения маскотов
       mascotVariants.forEach(variant => {
         const img = new Image();
         img.src = variant + ".svg";
         preloadedImages[variant] = img;
       });
       
-      // Предзагружаем финальный маскот
       const finalImg = new Image();
       finalImg.src = mascotFinal + ".svg";
       preloadedImages[mascotFinal] = finalImg;
     }
-    
-    // Вызываем предзагрузку при инициализации
     preloadImages();
 
     const questions = [
@@ -515,7 +519,6 @@
       }
     ];
 
-    // Функция для обновления маскота в зависимости от времени
     function updateMascot(index) {
       if (index === undefined) {
         if (preloadedImages[mascotVariants[0]]) {
@@ -539,7 +542,6 @@
               gameMascotEl.removeChild(gameMascotEl.firstChild);
             }
           }, 10);
-          
           return;
         } else {
           const newImg = document.createElement('img');
@@ -591,7 +593,6 @@
       }
     }
 
-    // Показываем финальный маскот при завершении игры
     function showFinalMascot() {
       if (preloadedImages[mascotFinal]) {
         const finalImg = document.createElement('img');
@@ -614,7 +615,6 @@
       }
     }
 
-    // Google Sheets
     const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
     const leaderboardLimit = 20;
     const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT " + leaderboardLimit);
@@ -737,6 +737,7 @@
         const btn = document.createElement("button");
         btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
 <div style='font-size: 16px;'>${answer}</div>`;
+        // Ширину и поведение этих кнопок не ломаем
         btn.onclick = () => {
           btn.style.background = '#D5D931';
           btn.style.color = '#03111C';
