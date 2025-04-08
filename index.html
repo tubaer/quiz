@@ -93,8 +93,11 @@
       align-items: center;
     }
 
+    /* Добавляем flex-direction для того, чтобы инпуты шли друг под другом,
+       а родительский блок занимал всё оставшееся пространство */
     .form-input-area {
       display: flex;
+      flex-direction: column;
       flex: 1;
       gap: 8px;
     }
@@ -110,7 +113,9 @@
       outline: none;
     }
 
+    /* Переопределяем ширину кнопки, чтобы она не растягивалась на всю ширину */
     .submit-button {
+      width: auto;
       background: transparent;
       color: #E6EDE4;
       font-size: 16px;
