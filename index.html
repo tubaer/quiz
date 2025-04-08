@@ -406,7 +406,6 @@
     const finalMascotContainerEl = document.getElementById("final-mascot-container");
 
     // Путь к файлам маскотов
-    const mascotDefault = "mascot rzobran default";
     const mascotVariants = [
       "mascot rzobran-01",
       "mascot rzobran-02",
@@ -446,23 +445,46 @@
     ];
 
     // Функция для обновления маскота в зависимости от времени
-    function updateMascot(elapsed) {
-      if (elapsed === undefined) {
-        // Установка дефолтного маскота при запуске игры
-        gameMascotEl.innerHTML = `<img src="${mascotDefault}.svg" alt="Mascot">`;
+    function updateMascot(index) {
+      if (index === undefined) {
+        // Установка первого маскота при запуске игры
+        const newImg = document.createElement('img');
+        newImg.src = `${mascotVariants[0]}.svg`;
+        newImg.alt = "Mascot";
+        newImg.style.width = "100%";
+        newImg.style.height = "auto";
+        
+        // Очищаем контейнер и добавляем новый маскот
+        gameMascotEl.innerHTML = '';
+        gameMascotEl.appendChild(newImg);
         return;
       }
       
-      // Определяем, какой вариант маскота показать в зависимости от времени
-      let mascotIndex = Math.floor(elapsed / 10);
-      if (mascotIndex >= 0 && mascotIndex < mascotVariants.length) {
-        gameMascotEl.innerHTML = `<img src="${mascotVariants[mascotIndex]}.svg" alt="Mascot">`;
+      // Проверяем, что индекс в пределах массива
+      if (index >= 0 && index < mascotVariants.length) {
+        // Создаем новый элемент img, чтобы избежать мерцания
+        const newImg = document.createElement('img');
+        newImg.src = `${mascotVariants[index]}.svg`;
+        newImg.alt = "Mascot";
+        newImg.style.width = "100%";
+        newImg.style.height = "auto";
+        
+        // Очищаем контейнер и добавляем новый маскот
+        gameMascotEl.innerHTML = '';
+        gameMascotEl.appendChild(newImg);
       }
     }
 
     // Показываем финальный маскот при завершении игры
     function showFinalMascot() {
-      finalMascotContainerEl.innerHTML = `<img src="${mascotFinal}.svg" alt="Final Mascot">`;
+      const finalImg = document.createElement('img');
+      finalImg.src = `${mascotFinal}.svg`;
+      finalImg.alt = "Final Mascot";
+      finalImg.style.width = "160px";
+      finalImg.style.height = "auto";
+      
+      finalMascotContainerEl.innerHTML = '';
+      finalMascotContainerEl.appendChild(finalImg);
     }
 
     // Google Sheets
@@ -627,30 +649,37 @@
 
     // Таймер
     function startTimer() {
-      // Создаем отдельный таймер для смены маскота
-      let elapsedTime = 0;
+      // Переменная для отслеживания текущего индекса маскота
+      let currentMascotIndex = 0;
       
-      // Таймер для смены маскота каждые 10 секунд
-      mascotTimer = setInterval(() => {
-        elapsedTime += 10;
-        
-        if (elapsedTime <= 60) {
-          updateMascot(elapsedTime);
-        } else {
-          clearInterval(mascotTimer);
-        }
-      }, 10000);
+      // Рассчитываем интервал смены маскота (примерно 8.5 секунд)
+      const mascotChangeInterval = Math.floor(timeLeft / mascotVariants.length);
+      
+      // Устанавливаем первый маскот сразу при запуске игры
+      updateMascot(currentMascotIndex);
+      
+      // Таймер для смены маскота на равных промежутках времени
+      const mascotChangePoints = [];
+      
+      // Вычисляем точки смены для каждого маскота
+      for (let i = 1; i < mascotVariants.length; i++) {
+        mascotChangePoints.push(timeLeft - (i * mascotChangeInterval));
+      }
       
       // Основной таймер игры
       const timer = setInterval(() => {
         timeLeft--;
         timeEl.textContent = timeLeft;
         
+        // Проверяем, нужно ли сменить маскота в текущий момент
+        const changeIndex = mascotChangePoints.indexOf(timeLeft);
+        if (changeIndex !== -1) {
+          currentMascotIndex = changeIndex + 1; // +1 потому что первый маскот уже показан
+          updateMascot(currentMascotIndex);
+        }
+        
         if (timeLeft <= 0) {
           clearInterval(timer);
-          if (mascotTimer) {
-            clearInterval(mascotTimer);
-          }
           showResult(score);
         }
       }, 1000);
