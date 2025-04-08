@@ -722,7 +722,7 @@
       answersEl.classList.add("hidden");
     }
 
-    // Отправка результата (изменена на GET-метод)
+    // Отправка результата (изменена на XMLHttpRequest)
     function submitScore() {
       const name = document.getElementById("username").value;
       const contact = document.getElementById("contact").value || "";
@@ -730,30 +730,39 @@
       
       if (!name) return alert("Please enter your name");
 
-      const scriptURL = "https://script.google.com/macros/s/AKfycbzIgpuRSjGmTrVFezwFHftsfcRk0OYlLJrLq6Wy0KfMhRrWAOSql9RcvruMAQOvgbqBWQ/exec";
+      // Обновленный URL на новый скрипт
+      const scriptURL = "https://script.google.com/macros/s/AKfycbykXzcVrQS2f61xGU0Va99SBReGo5XTKDcxbTWzA6Q-kbXp7fJ8bgZNN9MqD8HcuikBmw/exec";
       
-      // Создаем URL с параметрами для GET-запроса
-      const submissionURL = `${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()}`;
+      // Показываем статус отправки
+      document.getElementById("submit-msg").textContent = "Submitting...";
       
-      // Используем скрытый iframe для загрузки URL
-      submitIframeEl.onload = function() {
-        document.getElementById("submit-msg").textContent = "Score submitted!";
-        drawCustomLeaderboard();
-        
-        // После успешной отправки показываем кнопку играть снова
-        document.getElementById("play-again-btn").style.display = 'block';
-        
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
+      // Используем XMLHttpRequest вместо iframe
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", `${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()}`);
+      
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          document.getElementById("submit-msg").textContent = "Score submitted!";
+          drawCustomLeaderboard();
+          
+          // После успешной отправки показываем кнопку играть снова
+          document.getElementById("play-again-btn").style.display = 'block';
+          
+          setTimeout(() => {
+            location.reload();
+          }, 1500);
+        } else {
+          document.getElementById("submit-msg").textContent = "Failed to submit. Please try again.";
+          console.error("Error response: ", xhr.responseText);
+        }
       };
       
-      submitIframeEl.onerror = function() {
+      xhr.onerror = function(e) {
         document.getElementById("submit-msg").textContent = "Failed to submit. Please try again.";
+        console.error("Error sending request: ", e);
       };
       
-      // Загружаем URL в iframe
-      submitIframeEl.src = submissionURL;
+      xhr.send();
     }
   </script>
 </body>
