@@ -93,8 +93,6 @@
       align-items: center;
     }
 
-    /* Добавляем flex-direction для того, чтобы инпуты шли друг под другом,
-       а родительский блок занимал всё оставшееся пространство */
     .form-input-area {
       display: flex;
       flex-direction: column;
@@ -113,7 +111,6 @@
       outline: none;
     }
 
-    /* Переопределяем ширину кнопки, чтобы она не растягивалась на всю ширину */
     .submit-button {
       width: auto;
       background: transparent;
@@ -478,13 +475,13 @@
       // Предзагружаем все изображения маскотов
       mascotVariants.forEach(variant => {
         const img = new Image();
-        img.src = ${variant}.svg;
+        img.src = variant + ".svg";
         preloadedImages[variant] = img;
       });
       
       // Предзагружаем финальный маскот
       const finalImg = new Image();
-      finalImg.src = ${mascotFinal}.svg;
+      finalImg.src = mascotFinal + ".svg";
       preloadedImages[mascotFinal] = finalImg;
     }
     
@@ -554,7 +551,7 @@
         } else {
           // Если предзагрузка не сработала, используем обычный способ
           const newImg = document.createElement('img');
-          newImg.src = ${mascotVariants[0]}.svg;
+          newImg.src = mascotVariants[0] + ".svg";
           newImg.alt = "Mascot";
           newImg.style.width = "100%";
           newImg.style.height = "auto";
@@ -598,7 +595,7 @@
         } else {
           // Запасной вариант, если предзагрузка не сработала
           const newImg = document.createElement('img');
-          newImg.src = ${variant}.svg;
+          newImg.src = variant + ".svg";
           newImg.alt = "Mascot";
           newImg.style.width = "100%";
           newImg.style.height = "auto";
@@ -625,7 +622,7 @@
       } else {
         // Запасной вариант
         const finalImg = document.createElement('img');
-        finalImg.src = ${mascotFinal}.svg;
+        finalImg.src = mascotFinal + ".svg";
         finalImg.alt = "Final Mascot";
         finalImg.style.width = "240px";
         finalImg.style.height = "auto";
@@ -639,8 +636,8 @@
     const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
     // Увеличиваем лимит количества отображаемых записей в лидерборде
     const leaderboardLimit = 20; // Можно увеличить для отображения большего количества записей
-    const query = encodeURIComponent(SELECT A, B ORDER BY B DESC LIMIT ${leaderboardLimit});
-    const url = https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query};
+    const query = encodeURIComponent("SELECT A, B ORDER BY B DESC LIMIT " + leaderboardLimit);
+    const url = "https://docs.google.com/spreadsheets/d/" + sheetID + "/gviz/tq?sheet=Sheet1&tq=" + query;
 
     google.charts.load('current', {'packages':['table']});
     google.charts.setOnLoadCallback(drawCustomLeaderboard);
@@ -654,7 +651,6 @@
         .then(response => response.text())
         .then(data => {
           // Извлекаем JSON из ответа
-          // Ищем первую открывающую скобку и последнюю закрывающую
           const jsonStart = data.indexOf('{');
           const jsonEnd = data.lastIndexOf('}') + 1;
           
@@ -689,7 +685,7 @@
               // Обрабатываем строки из ответа Google Sheets
               if (jsonData.table && jsonData.table.rows) {
                 jsonData.table.rows.forEach((row, index) => {
-                  if (!row.c || !row.c[0]) return; // Пропускаем пустые строки
+                  if (!row.c || !row.c[0]) return;
                   
                   const tr = document.createElement('tr');
                   tr.className = 'leaderboard-row';
@@ -699,15 +695,13 @@
                   rankCell.className = 'leaderboard-cell rank';
                   
                   if (index < 3) {
-                    // Добавляем div с классом для стилизации
                     const rankWrapper = document.createElement('div');
-                    rankWrapper.className = rank-${index + 1};
+                    rankWrapper.className = "rank-" + (index + 1);
                     
-                    // Добавляем иконку кубка из SVG
                     const cupIcon = document.createElement('img');
                     cupIcon.src = 'https://cdn.debridge.finance/images/cup.svg';
                     cupIcon.className = 'rank-cup';
-                    cupIcon.alt = Rank ${index + 1};
+                    cupIcon.alt = "Rank " + (index + 1);
                     
                     rankWrapper.appendChild(cupIcon);
                     rankCell.appendChild(rankWrapper);
@@ -752,12 +746,10 @@
 
     // Запуск игры
     function startGame() {
-      // Прячем большого маскота (первый экран), показываем квиз
       document.getElementById('first-mascot').style.display = 'none';
       document.querySelector('.quiz-container').style.display = 'block';
       document.getElementById('start-container').style.display = 'none';
 
-      // Устанавливаем первый маскот при запуске игры
       updateMascot();
       
       loadQuestion();
@@ -773,10 +765,8 @@
 
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
-        btn.innerHTML = 
-          <div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
-          <div style='font-size: 16px;'>${answer}</div>
-        ;
+        btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
+<div style='font-size: 16px;'>${answer}</div>`;
         btn.onclick = () => {
           btn.style.background = '#D5D931';
           btn.style.color = '#03111C';
@@ -797,32 +787,22 @@
 
     // Таймер
     function startTimer() {
-      // Переменная для отслеживания текущего индекса маскота
       let currentMascotIndex = 0;
-      
-      // Рассчитываем интервал смены маскота (примерно 8.5 секунд)
       const mascotChangeInterval = Math.floor(timeLeft / mascotVariants.length);
-      
-      // Устанавливаем первый маскот сразу при запуске игры
       updateMascot(currentMascotIndex);
       
-      // Таймер для смены маскота на равных промежутках времени
       const mascotChangePoints = [];
-      
-      // Вычисляем точки смены для каждого маскота
       for (let i = 1; i < mascotVariants.length; i++) {
         mascotChangePoints.push(timeLeft - (i * mascotChangeInterval));
       }
       
-      // Основной таймер игры
       const timer = setInterval(() => {
         timeLeft--;
         timeEl.textContent = timeLeft;
         
-        // Проверяем, нужно ли сменить маскота в текущий момент
         const changeIndex = mascotChangePoints.indexOf(timeLeft);
         if (changeIndex !== -1) {
-          currentMascotIndex = changeIndex + 1; // +1 потому что первый маскот уже показан
+          currentMascotIndex = changeIndex + 1;
           updateMascot(currentMascotIndex);
         }
         
@@ -839,13 +819,10 @@
       document.getElementById("result").textContent = "";
       document.getElementById("submit-form").classList.remove("hidden");
       
-      // Показываем финальный маскот
       showFinalMascot();
       
-      // Скрываем маскот во время игры
       gameMascotEl.style.display = 'none';
       
-      // Показываем кнопку "Play Again"
       document.getElementById("play-again-btn").style.display = 'block';
       questionEl.classList.add("hidden");
       answersEl.classList.add("hidden");
@@ -859,24 +836,18 @@
       
       if (!name) return alert("Please enter your name");
 
-      // Обновленный URL на новый скрипт
       const scriptURL = "https://script.google.com/macros/s/AKfycbykXzcVrQS2f61xGU0Va99SBReGo5XTKDcxbTWzA6Q-kbXp7fJ8bgZNN9MqD8HcuikBmw/exec";
       
-      // Показываем статус отправки
       document.getElementById("submit-msg").textContent = "Submitting...";
       
-      // Используем XMLHttpRequest вместо iframe
       const xhr = new XMLHttpRequest();
-      xhr.open("GET", ${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()});
+      xhr.open("GET", scriptURL + "?name=" + encodeURIComponent(name) + "&score=" + encodeURIComponent(scoreValue) + "&contact=" + encodeURIComponent(contact) + "&t=" + Date.now());
       
       xhr.onload = function() {
         if (xhr.status === 200) {
           document.getElementById("submit-msg").textContent = "Score submitted!";
           drawCustomLeaderboard();
-          
-          // После успешной отправки показываем кнопку играть снова
           document.getElementById("play-again-btn").style.display = 'block';
-          
           setTimeout(() => {
             location.reload();
           }, 1500);
