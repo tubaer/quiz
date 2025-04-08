@@ -163,6 +163,7 @@
       /* Отключаем тач-хайлайт на мобильных устройствах */
       -webkit-tap-highlight-color: transparent;
       outline: none;
+      touch-action: manipulation; /* Улучшает отзывчивость на мобильных */
     }
     .answers button:hover {
       background: #D5D931;
@@ -734,15 +735,35 @@
       if (timeLeft <= 0) return;
       const q = questions[current % questions.length];
       questionEl.textContent = q.question;
+      
+      // Полностью очищаем контейнер с ответами и создаем новые кнопки
       answersEl.innerHTML = "";
 
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
+        // Устанавливаем явные стили по умолчанию для каждой кнопки
+        btn.style.background = "#161B26";
+        btn.style.color = "#E6EDE4";
         btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
 <div style='font-size: 16px;'>${answer}</div>`;
-        btn.onclick = () => {
+        
+        // Добавляем обработчик события onclick с временной блокировкой
+        btn.onclick = function() {
+          // Предотвращаем возможность повторного клика
+          if (btn.getAttribute('data-clicked') === 'true') return;
+          btn.setAttribute('data-clicked', 'true');
+          
+          // Блокируем все кнопки, чтобы предотвратить множественные клики
+          const allButtons = answersEl.querySelectorAll('button');
+          allButtons.forEach(button => {
+            button.setAttribute('data-clicked', 'true');
+          });
+          
+          // Меняем стиль текущей кнопки
           btn.style.background = '#D5D931';
           btn.style.color = '#03111C';
+          
+          // Обработка ответа
           setTimeout(() => {
             if (answer === q.correct) {
               score++;
@@ -751,9 +772,10 @@
               scoreEl.style.fontSize = scoreFontSize + "px";
             }
             current++;
-            loadQuestion();
+            loadQuestion(); // Загружаем следующий вопрос, стили кнопок сбросятся
           }, 150);
         };
+        
         answersEl.appendChild(btn);
       });
     }
@@ -833,6 +855,3 @@
       
       xhr.send();
     }
-  </script>
-</body>
-</html>
