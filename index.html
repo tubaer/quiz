@@ -115,6 +115,16 @@
       margin-top: 20px;
     }
 
+    /* Место для маскота после завершения игры */
+    .final-mascot-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .final-mascot-container img {
+      width: 160px;
+      height: auto;
+    }
+
     /* Leaderboard specific styles */
     #leaderboard {
       width: 100%;
@@ -318,12 +328,13 @@
     <div class="quiz-container">
       <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
       <div class="score-time">
-        <!-- Поднимаем выше (top: -60px), чтобы ещё сильнее выступал сверху -->
-        <img src="Untitled-1 copy 2.gif" alt="Мой персонаж"
-             style="position: absolute; top: -60px; right: -50px; width: 160px; height: auto; z-index: 2;">
+        <!-- Маскот на втором экране - будет заменен через JavaScript -->
+        <div id="game-mascot" style="position: absolute; top: -60px; right: -50px; width: 160px; height: auto; z-index: 2;">
+          <!-- Маскот будет заменен через JavaScript -->
+        </div>
         <div>Score:</div>
         <div id="score-display" style="font-size:64px; font-weight:bold;">0</div>
-        <div>Time: <span id="time">7</span> sec</div>
+        <div>Time: <span id="time">60</span> sec</div>
       </div>
 
       <div class="question" id="question">Loading...</div>
@@ -331,6 +342,9 @@
 
       <div class="result hidden" id="result"></div>
       <div class="hidden" id="submit-form">
+        <!-- Маскот после завершения - будет добавлен через JavaScript -->
+        <div id="final-mascot-container" class="final-mascot-container"></div>
+        
         <h3>Submit your score</h3>
         <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
           <input id="username" type="text" placeholder="Your name" style="
@@ -380,13 +394,28 @@
   <script>
     let current = 0;
     let score = 0;
-    let timeLeft = 7;
+    let timeLeft = 60; // Изменяем на 60 секунд
     let scoreFontSize = 64;
+    let mascotTimer = null;
 
     const questionEl = document.getElementById("question");
     const answersEl = document.getElementById("answers");
     const scoreEl = document.getElementById("score-display");
     const timeEl = document.getElementById("time");
+    const gameMascotEl = document.getElementById("game-mascot");
+    const finalMascotContainerEl = document.getElementById("final-mascot-container");
+
+    // Путь к файлам маскотов
+    const mascotDefault = "mascot rzobran default";
+    const mascotVariants = [
+      "mascot rzobran-01",
+      "mascot rzobran-02",
+      "mascot rzobran-03",
+      "mascot rzobran-04",
+      "mascot rzobran-05",
+      "mascot rzobran-06"
+    ];
+    const mascotFinal = "mascot rzobran-07";
 
     const questions = [
       {
@@ -415,6 +444,26 @@
         correct: "Monero"
       }
     ];
+
+    // Функция для обновления маскота в зависимости от времени
+    function updateMascot(elapsed) {
+      if (elapsed === undefined) {
+        // Установка дефолтного маскота при запуске игры
+        gameMascotEl.innerHTML = `<img src="${mascotDefault}.svg" alt="Mascot">`;
+        return;
+      }
+      
+      // Определяем, какой вариант маскота показать в зависимости от времени
+      let mascotIndex = Math.floor(elapsed / 10);
+      if (mascotIndex >= 0 && mascotIndex < mascotVariants.length) {
+        gameMascotEl.innerHTML = `<img src="${mascotVariants[mascotIndex]}.svg" alt="Mascot">`;
+      }
+    }
+
+    // Показываем финальный маскот при завершении игры
+    function showFinalMascot() {
+      finalMascotContainerEl.innerHTML = `<img src="${mascotFinal}.svg" alt="Final Mascot">`;
+    }
 
     // Google Sheets
     const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
@@ -538,6 +587,9 @@
       document.querySelector('.quiz-container').style.display = 'block';
       document.getElementById('start-container').style.display = 'none';
 
+      // Устанавливаем дефолтный маскот при запуске игры
+      updateMascot();
+      
       loadQuestion();
       startTimer();
     }
@@ -575,11 +627,30 @@
 
     // Таймер
     function startTimer() {
+      // Создаем отдельный таймер для смены маскота
+      let elapsedTime = 0;
+      
+      // Таймер для смены маскота каждые 10 секунд
+      mascotTimer = setInterval(() => {
+        elapsedTime += 10;
+        
+        if (elapsedTime <= 60) {
+          updateMascot(elapsedTime);
+        } else {
+          clearInterval(mascotTimer);
+        }
+      }, 10000);
+      
+      // Основной таймер игры
       const timer = setInterval(() => {
         timeLeft--;
         timeEl.textContent = timeLeft;
+        
         if (timeLeft <= 0) {
           clearInterval(timer);
+          if (mascotTimer) {
+            clearInterval(mascotTimer);
+          }
           showResult(score);
         }
       }, 1000);
@@ -590,6 +661,13 @@
       document.getElementById("result").classList.remove("hidden");
       document.getElementById("result").textContent = "";
       document.getElementById("submit-form").classList.remove("hidden");
+      
+      // Показываем финальный маскот
+      showFinalMascot();
+      
+      // Скрываем маскот во время игры
+      gameMascotEl.style.display = 'none';
+      
       // Показываем кнопку "Play Again"
       document.getElementById("play-again-btn").style.display = 'block';
       questionEl.classList.add("hidden");
