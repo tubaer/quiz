@@ -291,6 +291,11 @@
       box-shadow: 0 0 100px #FBFF3A;
       filter: blur(100px);
     }
+    
+    /* Скрытый iframe для отправки данных */
+    #submit-iframe {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -398,6 +403,9 @@
         <!-- Содержимое будет добавлено через JavaScript -->
       </div>
     </div>
+    
+    <!-- Скрытый iframe для отправки данных -->
+    <iframe id="submit-iframe" name="submit-iframe"></iframe>
   </div>
 
   <script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -414,6 +422,7 @@
     const timeEl = document.getElementById("time");
     const gameMascotEl = document.getElementById("game-mascot");
     const finalMascotContainerEl = document.getElementById("final-mascot-container");
+    const submitIframeEl = document.getElementById("submit-iframe");
 
     // Путь к файлам маскотов
     const mascotVariants = [
@@ -619,7 +628,7 @@
       document.querySelector('.quiz-container').style.display = 'block';
       document.getElementById('start-container').style.display = 'none';
 
-      // Устанавливаем дефолтный маскот при запуске игры
+      // Устанавливаем первый маскот при запуске игры
       updateMascot();
       
       loadQuestion();
@@ -713,27 +722,38 @@
       answersEl.classList.add("hidden");
     }
 
-    // Отправка результата
+    // Отправка результата (изменена на GET-метод)
     function submitScore() {
       const name = document.getElementById("username").value;
-      const contact = document.getElementById("contact").value || ""; // Получаем email или Telegram (если введен)
-      const score = document.getElementById("score-display").textContent;
+      const contact = document.getElementById("contact").value || "";
+      const scoreValue = document.getElementById("score-display").textContent;
       
       if (!name) return alert("Please enter your name");
 
       const scriptURL = "https://script.google.com/macros/s/AKfycbzIgpuRSjGmTrVFezwFHftsfcRk0OYlLJrLq6Wy0KfMhRrWAOSql9RcvruMAQOvgbqBWQ/exec";
-      fetch(scriptURL, {
-        method: "POST",
-        body: new URLSearchParams({ name, score, contact }) // Добавляем контактную информацию
-      })
-      .then(res => {
+      
+      // Создаем URL с параметрами для GET-запроса
+      const submissionURL = `${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()}`;
+      
+      // Используем скрытый iframe для загрузки URL
+      submitIframeEl.onload = function() {
         document.getElementById("submit-msg").textContent = "Score submitted!";
-        drawCustomLeaderboard(); // Используем нашу функцию вместо drawTable
+        drawCustomLeaderboard();
+        
+        // После успешной отправки показываем кнопку играть снова
+        document.getElementById("play-again-btn").style.display = 'block';
+        
         setTimeout(() => {
           location.reload();
         }, 1500);
-      })
-      .catch(err => document.getElementById("submit-msg").textContent = "Failed to submit.");
+      };
+      
+      submitIframeEl.onerror = function() {
+        document.getElementById("submit-msg").textContent = "Failed to submit. Please try again.";
+      };
+      
+      // Загружаем URL в iframe
+      submitIframeEl.src = submissionURL;
     }
   </script>
 </body>
