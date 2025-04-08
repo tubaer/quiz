@@ -43,8 +43,7 @@
     }
 
     h1 {
-      margin-top: 15px;
-      margin-bottom: 15px;
+      margin-top: 0;
       font-size: 36px;
       color: #E6EDE4;
     }
@@ -69,7 +68,7 @@
       background: #1F242F;
       border-radius: 8px;
       margin-top: 20px;
-      padding: 15px 30px 25px; /* Уменьшаем отступы в 2+ раза */
+      padding: 30px 30px 40px; /* Увеличиваем отступ снизу */
       display: none;
       position: relative;
       overflow: visible; /* Чтобы персонаж мог выступать за границы */
@@ -80,13 +79,11 @@
       margin-bottom: 15px;
     }
 
-    /* Форма отправки результатов должна быть шире родителя */
     .submit-form-container {
       display: flex;
       flex-direction: column;
       width: 100%;
       margin-bottom: 20px;
-      padding: 0; /* Убираем любые паддинги */
     }
 
     .form-row {
@@ -98,12 +95,12 @@
 
     .form-input-area {
       display: flex;
-      flex: 3;
+      flex: 1;
       gap: 8px;
     }
 
     .form-input-area input {
-      width: 50%;
+      flex: 1;
       padding: 12px;
       font-size: 16px;
       border-radius: 8px;
@@ -114,7 +111,6 @@
     }
 
     .submit-button {
-      flex: 1;
       background: transparent;
       color: #E6EDE4;
       font-size: 16px;
@@ -125,12 +121,12 @@
       padding: 12px 20px;
       white-space: nowrap;
       min-width: 100px;
-      max-width: 120px;
     }
 
     .score-time {
       font-size: 26px;
-      margin-bottom: 20px;
+      margin-bottom: 40px; /* Увеличиваем отступ снизу */
+      margin-top: 10px; /* Добавляем отступ сверху чтобы опустить плитку */
       position: relative;
     }
     .score-time div {
@@ -139,8 +135,7 @@
     .question {
       font-size: 32px;
       font-weight: 600;
-      margin-bottom: 30px;
-      margin-top: 40px;
+      margin-bottom: 24px;
     }
 
     .answers button {
@@ -151,8 +146,8 @@
       text-align: left;
       font-weight: 500;
       transition: background 0.2s, color 0.2s;
-      margin: 15px 0; /* Увеличиваем отступы между кнопками */
-      padding: 16px; /* Увеличиваем паддинг кнопок */
+      margin: 10px 0;
+      padding: 12px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -185,13 +180,13 @@
       height: auto;
     }
 
-    /* Для лидерборда тоже увеличиваем отступы */
+    /* Leaderboard specific styles */
     #leaderboard {
       width: 100%;
       background-color: #1F242F;
       border-radius: 8px;
-      margin-top: 40px; /* Увеличиваем отступ сверху */
-      padding: 30px;
+      margin-top: 20px;
+      padding: 20px;
       max-height: 400px;
       overflow: hidden;
     }
@@ -392,9 +387,9 @@
     <!-- Квиз -->
     <div class="quiz-container">
       <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
-      <div class="score-time">
-        <!-- Маскот на втором экране - значительно выше -->
-        <div id="game-mascot" style="position: absolute; top: -160px; right: -70px; width: 230px; height: auto; z-index: 2;">
+      <div class="score-time" style="margin-top: 30px; margin-bottom: 60px;">
+        <!-- Маскот на втором экране - будет заменен через JavaScript -->
+        <div id="game-mascot" style="position: absolute; top: -130px; right: -60px; width: 210px; height: auto; z-index: 2;">
           <!-- Маскот будет заменен через JavaScript -->
         </div>
         <div>Score:</div>
