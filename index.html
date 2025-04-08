@@ -441,6 +441,20 @@
 
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+    // Declare startGame function in global scope first
+    function startGame() {
+      // Прячем большого маскота (первый экран), показываем квиз
+      document.getElementById('first-mascot').style.display = 'none';
+      document.querySelector('.quiz-container').style.display = 'block';
+      document.getElementById('start-container').style.display = 'none';
+
+      // Устанавливаем первый маскот при запуске игры
+      updateMascot();
+      
+      loadQuestion();
+      startTimer();
+    }
+    
     let current = 0;
     let score = 0;
     let timeLeft = 60; // Изменяем на 60 секунд
@@ -745,19 +759,7 @@
         });
     }
 
-    // Запуск игры
-    function startGame() {
-      // Прячем большого маскота (первый экран), показываем квиз
-      document.getElementById('first-mascot').style.display = 'none';
-      document.querySelector('.quiz-container').style.display = 'block';
-      document.getElementById('start-container').style.display = 'none';
-
-      // Устанавливаем первый маскот при запуске игры
-      updateMascot();
-      
-      loadQuestion();
-      startTimer();
-    }
+    // The startGame function is now defined at the top of the script for hoisting
 
     // Загрузка вопроса
     function loadQuestion() {
