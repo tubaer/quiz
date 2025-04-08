@@ -87,13 +87,12 @@
     }
 
     .form-row {
-      display: flex;
+      display: flex; flex-wrap: nowrap; /* ДОБАВИЛИ flex-wrap: nowrap */
       width: 100%;
       gap: 8px;
       align-items: center;
     }
 
-    /* САМЫЙ ВАЖНЫЙ МОМЕНТ: убрали flex-direction: column, чтобы все элементы шли в одну строку */
     .form-input-area {
       display: flex; 
       flex: 1;
@@ -112,7 +111,7 @@
     }
 
     .submit-button {
-      width: auto;
+      width: auto !important; display: inline-block !important; /* ДОБАВИЛИ переопределение! */
       background: transparent;
       color: #E6EDE4;
       font-size: 16px;
@@ -519,7 +518,6 @@
     // Функция для обновления маскота в зависимости от времени
     function updateMascot(index) {
       if (index === undefined) {
-        // Установка первого маскота при запуске игры
         if (preloadedImages[mascotVariants[0]]) {
           const newImg = document.createElement('img');
           newImg.src = preloadedImages[mascotVariants[0]].src;
@@ -556,7 +554,6 @@
         }
       }
       
-      // Проверяем, что индекс в пределах массива
       if (index >= 0 && index < mascotVariants.length) {
         const variant = mascotVariants[index];
         
