@@ -147,13 +147,13 @@
 
     /* Стили ответов */
     .answers button {
-      background: #161B26 !important;
-      color: #E6EDE4 !important;
+      background: #161B26;
+      color: #E6EDE4;
       border: 1px solid #1F242F;
       border-radius: 8px;
       text-align: left;
       font-weight: 500;
-      transition: none; /* Удаляем анимацию для предотвращения проблем */
+      transition: background 0.2s, color 0.2s;
       margin: 10px 0;
       padding: 12px;
       display: flex;
@@ -163,23 +163,10 @@
       /* Отключаем тач-хайлайт на мобильных устройствах */
       -webkit-tap-highlight-color: transparent;
       outline: none;
-      touch-action: manipulation; /* Улучшает отзывчивость на мобильных */
-      user-select: none; /* Предотвращает выделение текста на мобильных */
     }
-    
-    /* Создаем отдельный селектор для кнопки-ответа в активном состоянии */
-    .answers button.selected,
-    .answers button[data-selected="true"] {
-      background: #D5D931 !important;
-      color: #03111C !important;
-    }
-    
-    /* Отключаем hover-эффект на мобильных устройствах */
-    @media (hover: hover) {
-      .answers button:hover {
-        background: #D5D931 !important;
-        color: #03111C !important;
-      }
+    .answers button:hover {
+      background: #D5D931;
+      color: #03111C;
     }
 
     .hidden {
@@ -473,7 +460,7 @@
     let mascotTimer = null;
 
     const questionEl = document.getElementById("question");
-    let answersEl = document.getElementById("answers"); // Changed to let since we'll be reassigning it
+    const answersEl = document.getElementById("answers");
     const scoreEl = document.getElementById("score-display");
     const timeEl = document.getElementById("time");
     const gameMascotEl = document.getElementById("game-mascot");
@@ -743,73 +730,53 @@
       startTimer();
     }
 
-    // Глобальная переменная для хранения текущей выбранной кнопки
-    let selectedButton = null;
-    let answerSelected = false;
-
+    // Fixed function to properly clear and reset button styles between questions
     function loadQuestion() {
       if (timeLeft <= 0) return;
-      
-      // Разрешаем новый выбор для следующего вопроса
-      answerSelected = false;
-      selectedButton = null;
       
       const q = questions[current % questions.length];
       questionEl.textContent = q.question;
       
-      // Полностью заменяем контейнер ответов новым элементом
-      const newAnswersEl = document.createElement('div');
-      newAnswersEl.className = 'answers';
-      newAnswersEl.id = 'answers';
-      
+      // Completely clear the answers container
+      answersEl.innerHTML = "";
+
+      // Create all new buttons for this question
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
-        // Устанавливаем стили через CSS классы вместо инлайн-стилей
-        btn.className = 'answer-button';
-        btn.style.cssText = 'background: #161B26 !important; color: #E6EDE4 !important;';
+        
+        // Set the static HTML content
         btn.innerHTML = `<div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
 <div style='font-size: 16px;'>${answer}</div>`;
         
-        // Используем замыкание для сохранения ссылки на кнопку
-        btn.addEventListener('click', (function(currentBtn) {
-          return function(event) {
-            // Проверяем, был ли уже выбран ответ для этого вопроса
-            if (answerSelected) return;
-            
-            // Ставим флаг, что ответ выбран
-            answerSelected = true;
-            selectedButton = currentBtn;
-            
-            // Применяем стиль выбранной кнопки принудительно через CSS
-            currentBtn.style.cssText = 'background: #D5D931 !important; color: #03111C !important;';
-            
-            // Обработка ответа с задержкой
-            setTimeout(() => {
-              if (answer === q.correct) {
-                score++;
-                scoreEl.textContent = score;
-                scoreFontSize++;
-                scoreEl.style.fontSize = scoreFontSize + "px";
-              }
-              
-              // Переходим к следующему вопросу после небольшой задержки
-              current++;
-              
-              // Создаем полностью новые элементы для следующего вопроса
-              loadQuestion();
-            }, 150);
-          };
-        })(btn), {passive: true}); // используем passive для улучшения производительности на мобильных
+        // Create a new click handler for each button
+        btn.onclick = function(e) {
+          e.preventDefault(); // Prevent any default behavior
+          
+          // Store the selected state for visual feedback
+          this.style.background = '#D5D931'; 
+          this.style.color = '#03111C';
+          
+          // Disable all buttons to prevent multiple selections
+          const buttons = answersEl.querySelectorAll('button');
+          buttons.forEach(button => {
+            button.disabled = true;
+          });
+          
+          // Process the answer after a short delay for visual feedback
+          setTimeout(() => {
+            if (answer === q.correct) {
+              score++;
+              scoreEl.textContent = score;
+              scoreFontSize++;
+              scoreEl.style.fontSize = scoreFontSize + "px";
+            }
+            current++;
+            loadQuestion(); // Load next question with fresh buttons
+          }, 150);
+        };
         
-        newAnswersEl.appendChild(btn);
+        answersEl.appendChild(btn);
       });
-      
-      // Полностью заменяем элемент ответов
-      const parentElement = answersEl.parentNode;
-      parentElement.replaceChild(newAnswersEl, answersEl);
-      
-      // Обновляем ссылку на новый элемент
-      answersEl = document.getElementById('answers');
     }
 
     function startTimer() {
@@ -887,3 +854,6 @@
       
       xhr.send();
     }
+  </script>
+</body>
+</html>
