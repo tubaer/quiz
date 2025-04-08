@@ -117,11 +117,11 @@
 
     /* Место для маскота после завершения игры */
     .final-mascot-container {
-      margin: 20px 0;
+      margin: 5px 0 15px;
       text-align: center;
     }
     .final-mascot-container img {
-      width: 160px;
+      width: 240px;
       height: auto;
     }
 
@@ -342,8 +342,8 @@
 
       <div class="result hidden" id="result"></div>
       <div class="hidden" id="submit-form">
-        <!-- Маскот после завершения - будет добавлен через JavaScript -->
-        <div id="final-mascot-container" class="final-mascot-container"></div>
+        <!-- Маскот после завершения - будет добавлен через JavaScript, отступ сверху убран -->
+        <div id="final-mascot-container" class="final-mascot-container" style="margin-top: 0;"></div>
         
         <h3>Submit your score</h3>
         <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
@@ -480,7 +480,7 @@
       const finalImg = document.createElement('img');
       finalImg.src = `${mascotFinal}.svg`;
       finalImg.alt = "Final Mascot";
-      finalImg.style.width = "160px";
+      finalImg.style.width = "240px";
       finalImg.style.height = "auto";
       
       finalMascotContainerEl.innerHTML = '';
