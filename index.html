@@ -48,7 +48,7 @@
       color: #E6EDE4;
     }
 
-    /* ВОССТАНАВЛИВАЕМ СТАРУЮ ЛОГИКУ: ВСЕ КНОПКИ ПО УМОЛЧАНИЮ — 100% */
+    /* Глобальные настройки кнопок (Play, Play Again, и т.д.) – 100% ширина */
     button {
       width: 100%;
       display: block;
@@ -114,7 +114,7 @@
       outline: none;
     }
 
-    /* ТОЛЬКО ДЛЯ КНОПКИ SUBMIT: width: auto и прозрачный фон */
+    /* Кнопка Submit – только для этой кнопки: авто-ширина и без 100% */
     .submit-button {
       width: auto !important;
       display: inline-block !important;
@@ -145,6 +145,7 @@
       margin-bottom: 24px;
     }
 
+    /* Стили ответов */
     .answers button {
       background: #161B26;
       color: #E6EDE4;
@@ -158,6 +159,10 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 100%;
+      /* Отключаем тач-хайлайт на мобильных устройствах */
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
     .answers button:hover {
       background: #D5D931;
