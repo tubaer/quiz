@@ -8,7 +8,12 @@
 
   <style>
     /* Сброс отступов и установка box-sizing */
-    html, body {
+    html {
+      font-size: 75%; /* Уменьшаем базовый размер шрифта до 75% */
+      zoom: 0.75; /* Применяем масштабирование 75% ко всему содержимому */
+    }
+    
+    body {
       margin: 0;
       padding: 0;
     }
@@ -334,7 +339,7 @@
       <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
       <div class="score-time">
         <!-- Маскот на втором экране - будет заменен через JavaScript -->
-        <div id="game-mascot" style="position: absolute; top: -60px; right: -50px; width: 160px; height: auto; z-index: 2;">
+        <div id="game-mascot" style="position: absolute; top: -80px; right: -60px; width: 210px; height: auto; z-index: 2;">
           <!-- Маскот будет заменен через JavaScript -->
         </div>
         <div>Score:</div>
@@ -351,27 +356,29 @@
         <div id="final-mascot-container" class="final-mascot-container" style="margin-top: 0;"></div>
         
         <h3>Submit your score</h3>
-        <div style="max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-          <input id="username" type="text" placeholder="Your name" style="
-            width: 100%;
-            padding: 14px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #2A313F;
-            background: #161B26;
-            color: #E6EDE4;
-            outline: none;
-          "/>
-          <input id="contact" type="text" placeholder="Your email or Telegram (optional)" style="
-            width: 100%;
-            padding: 14px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #2A313F;
-            background: #161B26;
-            color: #E6EDE4;
-            outline: none;
-          "/>
+        <div style="max-width: 500px; margin: 0 auto; display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 10px;">
+          <div style="flex: 1; display: flex; gap: 8px;">
+            <input id="username" type="text" placeholder="Your name" style="
+              flex: 1;
+              padding: 14px 12px;
+              font-size: 16px;
+              border-radius: 8px;
+              border: 1px solid #2A313F;
+              background: #161B26;
+              color: #E6EDE4;
+              outline: none;
+            "/>
+            <input id="contact" type="text" placeholder="Your email or Telegram (optional)" style="
+              flex: 1;
+              padding: 14px 12px;
+              font-size: 16px;
+              border-radius: 8px;
+              border: 1px solid #2A313F;
+              background: #161B26;
+              color: #E6EDE4;
+              outline: none;
+            "/>
+          </div>
           <button onclick="submitScore()" style="
             background: transparent;
             color: #E6EDE4;
@@ -381,7 +388,8 @@
             border-radius: 8px;
             cursor: pointer;
             padding: 14px 24px;
-            width: 100%;
+            white-space: nowrap;
+            width: auto;
           ">Submit</button>
         </div>
         <div id="submit-msg" style="margin-top: 10px;"></div>
@@ -576,14 +584,27 @@
 
     // Показываем финальный маскот при завершении игры
     function showFinalMascot() {
-      const finalImg = document.createElement('img');
-      finalImg.src = `${mascotFinal}.svg`;
-      finalImg.alt = "Final Mascot";
-      finalImg.style.width = "240px";
-      finalImg.style.height = "auto";
-      
-      finalMascotContainerEl.innerHTML = '';
-      finalMascotContainerEl.appendChild(finalImg);
+      if (preloadedImages[mascotFinal]) {
+        // Используем предзагруженное изображение
+        const finalImg = document.createElement('img');
+        finalImg.src = preloadedImages[mascotFinal].src;
+        finalImg.alt = "Final Mascot";
+        finalImg.style.width = "240px";
+        finalImg.style.height = "auto";
+        
+        finalMascotContainerEl.innerHTML = '';
+        finalMascotContainerEl.appendChild(finalImg);
+      } else {
+        // Запасной вариант
+        const finalImg = document.createElement('img');
+        finalImg.src = `${mascotFinal}.svg`;
+        finalImg.alt = "Final Mascot";
+        finalImg.style.width = "240px";
+        finalImg.style.height = "auto";
+        
+        finalMascotContainerEl.innerHTML = '';
+        finalMascotContainerEl.appendChild(finalImg);
+      }
     }
 
     // Google Sheets
