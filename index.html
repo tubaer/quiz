@@ -68,7 +68,7 @@
       background: #1F242F;
       border-radius: 8px;
       margin-top: 20px;
-      padding: 30px 30px 40px; /* Увеличиваем отступ снизу */
+      padding: 40px 30px 60px; /* Значительно увеличиваем отступ снизу и сверху */
       display: none;
       position: relative;
       overflow: visible; /* Чтобы персонаж мог выступать за границы */
@@ -135,7 +135,8 @@
     .question {
       font-size: 32px;
       font-weight: 600;
-      margin-bottom: 24px;
+      margin-bottom: 30px;
+      margin-top: 40px;
     }
 
     .answers button {
@@ -146,8 +147,8 @@
       text-align: left;
       font-weight: 500;
       transition: background 0.2s, color 0.2s;
-      margin: 10px 0;
-      padding: 12px;
+      margin: 15px 0; /* Увеличиваем отступы между кнопками */
+      padding: 16px; /* Увеличиваем паддинг кнопок */
       display: flex;
       align-items: center;
       gap: 12px;
@@ -387,9 +388,9 @@
     <!-- Квиз -->
     <div class="quiz-container">
       <!-- ПЕРСОНАЖ: ВТОРОЙ ЭКРАН (на плитке) -->
-      <div class="score-time" style="margin-top: 30px; margin-bottom: 60px;">
-        <!-- Маскот на втором экране - будет заменен через JavaScript -->
-        <div id="game-mascot" style="position: absolute; top: -130px; right: -60px; width: 210px; height: auto; z-index: 2;">
+      <div class="score-time" style="margin-top: 60px; margin-bottom: 80px;">
+        <!-- Маскот на втором экране - значительно выше -->
+        <div id="game-mascot" style="position: absolute; top: -160px; right: -70px; width: 230px; height: auto; z-index: 2;">
           <!-- Маскот будет заменен через JavaScript -->
         </div>
         <div>Score:</div>
