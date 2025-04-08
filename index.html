@@ -473,13 +473,13 @@
       // Предзагружаем все изображения маскотов
       mascotVariants.forEach(variant => {
         const img = new Image();
-        img.src = `${variant}.svg`;
+        img.src = ${variant}.svg;
         preloadedImages[variant] = img;
       });
       
       // Предзагружаем финальный маскот
       const finalImg = new Image();
-      finalImg.src = `${mascotFinal}.svg`;
+      finalImg.src = ${mascotFinal}.svg;
       preloadedImages[mascotFinal] = finalImg;
     }
     
@@ -549,7 +549,7 @@
         } else {
           // Если предзагрузка не сработала, используем обычный способ
           const newImg = document.createElement('img');
-          newImg.src = `${mascotVariants[0]}.svg`;
+          newImg.src = ${mascotVariants[0]}.svg;
           newImg.alt = "Mascot";
           newImg.style.width = "100%";
           newImg.style.height = "auto";
@@ -593,7 +593,7 @@
         } else {
           // Запасной вариант, если предзагрузка не сработала
           const newImg = document.createElement('img');
-          newImg.src = `${variant}.svg`;
+          newImg.src = ${variant}.svg;
           newImg.alt = "Mascot";
           newImg.style.width = "100%";
           newImg.style.height = "auto";
@@ -620,7 +620,7 @@
       } else {
         // Запасной вариант
         const finalImg = document.createElement('img');
-        finalImg.src = `${mascotFinal}.svg`;
+        finalImg.src = ${mascotFinal}.svg;
         finalImg.alt = "Final Mascot";
         finalImg.style.width = "240px";
         finalImg.style.height = "auto";
@@ -634,8 +634,8 @@
     const sheetID = "15XIDizh7Q0PWANiAhf3a6iU4WOPWXe70Qz44hCMc3Rw";
     // Увеличиваем лимит количества отображаемых записей в лидерборде
     const leaderboardLimit = 20; // Можно увеличить для отображения большего количества записей
-    const query = encodeURIComponent(`SELECT A, B ORDER BY B DESC LIMIT ${leaderboardLimit}`);
-    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query}`;
+    const query = encodeURIComponent(SELECT A, B ORDER BY B DESC LIMIT ${leaderboardLimit});
+    const url = https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=Sheet1&tq=${query};
 
     google.charts.load('current', {'packages':['table']});
     google.charts.setOnLoadCallback(drawCustomLeaderboard);
@@ -696,13 +696,13 @@
                   if (index < 3) {
                     // Добавляем div с классом для стилизации
                     const rankWrapper = document.createElement('div');
-                    rankWrapper.className = `rank-${index + 1}`;
+                    rankWrapper.className = rank-${index + 1};
                     
                     // Добавляем иконку кубка из SVG
                     const cupIcon = document.createElement('img');
                     cupIcon.src = 'https://cdn.debridge.finance/images/cup.svg';
                     cupIcon.className = 'rank-cup';
-                    cupIcon.alt = `Rank ${index + 1}`;
+                    cupIcon.alt = Rank ${index + 1};
                     
                     rankWrapper.appendChild(cupIcon);
                     rankCell.appendChild(rankWrapper);
@@ -768,10 +768,10 @@
 
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
-        btn.innerHTML = `
+        btn.innerHTML = 
           <div style='padding: 8px 12px; background: #1F242F; border-radius: 4px; border: 1px solid #2A313F; color: #E6EDE4;'>${index + 1}</div>
           <div style='font-size: 16px;'>${answer}</div>
-        `;
+        ;
         btn.onclick = () => {
           btn.style.background = '#D5D931';
           btn.style.color = '#03111C';
@@ -862,7 +862,7 @@
       
       // Используем XMLHttpRequest вместо iframe
       const xhr = new XMLHttpRequest();
-      xhr.open("GET", `${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()}`);
+      xhr.open("GET", ${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()});
       
       xhr.onload = function() {
         if (xhr.status === 200) {
@@ -870,6 +870,7 @@
           drawCustomLeaderboard();
           
           // После успешной отправки показываем кнопку играть снова
+          document.getElementById("play-again-btn").style.display = 'block';
           
           setTimeout(() => {
             location.reload();
