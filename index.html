@@ -346,9 +346,19 @@
         <div id="final-mascot-container" class="final-mascot-container" style="margin-top: 0;"></div>
         
         <h3>Submit your score</h3>
-        <div style="max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
+        <div style="max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
           <input id="username" type="text" placeholder="Your name" style="
-            flex: 1;
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #2A313F;
+            background: #161B26;
+            color: #E6EDE4;
+            outline: none;
+          "/>
+          <input id="contact" type="text" placeholder="Your email or Telegram (optional)" style="
+            width: 100%;
             padding: 14px 20px;
             font-size: 16px;
             border-radius: 8px;
@@ -366,7 +376,7 @@
             border-radius: 8px;
             cursor: pointer;
             padding: 14px 24px;
-            width: auto;
+            width: 100%;
           ">Submit</button>
         </div>
         <div id="submit-msg" style="margin-top: 10px;"></div>
@@ -706,13 +716,15 @@
     // Отправка результата
     function submitScore() {
       const name = document.getElementById("username").value;
+      const contact = document.getElementById("contact").value || ""; // Получаем email или Telegram (если введен)
       const score = document.getElementById("score-display").textContent;
+      
       if (!name) return alert("Please enter your name");
 
       const scriptURL = "https://script.google.com/macros/s/AKfycbzIgpuRSjGmTrVFezwFHftsfcRk0OYlLJrLq6Wy0KfMhRrWAOSql9RcvruMAQOvgbqBWQ/exec";
       fetch(scriptURL, {
         method: "POST",
-        body: new URLSearchParams({ name, score })
+        body: new URLSearchParams({ name, score, contact }) // Добавляем контактную информацию
       })
       .then(res => {
         document.getElementById("submit-msg").textContent = "Score submitted!";
