@@ -784,3 +784,73 @@
             }
             current++;
             loadQuestion();
+          }, 150);
+        };
+        answersEl.appendChild(btn);
+      });
+    }
+
+    // Таймер
+    function startTimer() {
+      // Переменная для отслеживания текущего индекса маскота
+      let currentMascotIndex = 0;
+      
+      // Рассчитываем интервал смены маскота (примерно 8.5 секунд)
+      const mascotChangeInterval = Math.floor(timeLeft / mascotVariants.length);
+      
+      // Устанавливаем первый маскот сразу при запуске игры
+      updateMascot(currentMascotIndex);
+      
+      // Таймер для смены маскота на равных промежутках времени
+      const mascotChangePoints = [];
+      
+      // Вычисляем точки смены для каждого маскота
+      for (let i = 1; i < mascotVariants.length; i++) {
+        mascotChangePoints.push(timeLeft - (i * mascotChangeInterval));
+      }
+      
+      // Основной таймер игры
+      const timer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        
+        // Проверяем, нужно ли сменить маскота в текущий момент
+        const changeIndex = mascotChangePoints.indexOf(timeLeft);
+        if (changeIndex !== -1) {
+          currentMascotIndex = changeIndex + 1; // +1 потому что первый маскот уже показан
+          updateMascot(currentMascotIndex);
+        }
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          showResult(score);
+        }
+      }, 1000);
+    }
+
+    // Показ результата
+    function showResult(score) {
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").textContent = "";
+      document.getElementById("submit-form").classList.remove("hidden");
+      
+      // Показываем финальный маскот
+      showFinalMascot();
+      
+      // Скрываем маскот во время игры
+      gameMascotEl.style.display = 'none';
+      
+      // Показываем кнопку "Play Again" и скрываем форму отправки
+      document.getElementById("play-again-btn").style.display = 'block';
+      questionEl.classList.add("hidden");
+      answersEl.classList.add("hidden");
+    }
+
+    // Отправка результата (функция оставлена для совместимости, но не показывается пользователю)
+    function submitScore() {
+      // Эта функция больше не используется, поскольку форма подачи скрыта
+      console.log("Submit functionality disabled as requested");
+      
+      // Показываем кнопку играть снова
+      document.getElementById("play-again-btn").style.display = 'block';
+    }
