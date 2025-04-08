@@ -82,7 +82,7 @@
 
     /* Форма отправки результатов должна быть шире родителя */
     .submit-form-container {
-      display: none; /* Changed from flex to none to hide by default */
+      display: flex;
       flex-direction: column;
       width: 100%;
       margin-bottom: 20px;
@@ -126,7 +126,6 @@
       white-space: nowrap;
       min-width: 100px;
       max-width: 120px;
-      display: none; /* Hide submit button by default */
     }
 
     .score-time {
@@ -164,7 +163,7 @@
     }
 
     .hidden {
-      display: none !important; /* Added !important to ensure it stays hidden */
+      display: none;
     }
     .result {
       font-size: 48px;
@@ -174,7 +173,6 @@
 
     #submit-form {
       margin-top: 20px;
-      display: none; /* Hide the form by default */
     }
 
     /* Место для маскота после завершения игры */
@@ -412,14 +410,21 @@
         <!-- Маскот после завершения - будет добавлен через JavaScript, отступ сверху убран -->
         <div id="final-mascot-container" class="final-mascot-container" style="margin-top: 0;"></div>
         
-        <!-- Removed h3 for submitting score -->
-        <!-- Removed submit form container - no longer showing submit option -->
-        
+        <h3>Submit your score</h3>
+        <div class="submit-form-container">
+          <div class="form-row">
+            <div class="form-input-area">
+              <input id="username" type="text" placeholder="Your name"/>
+              <input id="contact" type="text" placeholder="Your email or Telegram (optional)"/>
+            </div>
+            <button onclick="submitScore()" class="submit-button">Submit</button>
+          </div>
+        </div>
         <div id="submit-msg" style="margin-top: 10px;"></div>
 
         <!-- Перенесли кнопку Play Again сюда -->
         <div style="margin-top: 20px;">
-          <button id="play-again-btn" onclick="location.reload()">Play Again</button>
+          <button id="play-again-btn" onclick="location.reload()" style="display:none;">Play Again</button>
         </div>
       </div>
     </div>
@@ -441,20 +446,6 @@
 
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
-    // Declare startGame function in global scope first
-    function startGame() {
-      // Прячем большого маскота (первый экран), показываем квиз
-      document.getElementById('first-mascot').style.display = 'none';
-      document.querySelector('.quiz-container').style.display = 'block';
-      document.getElementById('start-container').style.display = 'none';
-
-      // Устанавливаем первый маскот при запуске игры
-      updateMascot();
-      
-      loadQuestion();
-      startTimer();
-    }
-    
     let current = 0;
     let score = 0;
     let timeLeft = 60; // Изменяем на 60 секунд
@@ -759,7 +750,19 @@
         });
     }
 
-    // The startGame function is now defined at the top of the script for hoisting
+    // Запуск игры
+    function startGame() {
+      // Прячем большого маскота (первый экран), показываем квиз
+      document.getElementById('first-mascot').style.display = 'none';
+      document.querySelector('.quiz-container').style.display = 'block';
+      document.getElementById('start-container').style.display = 'none';
+
+      // Устанавливаем первый маскот при запуске игры
+      updateMascot();
+      
+      loadQuestion();
+      startTimer();
+    }
 
     // Загрузка вопроса
     function loadQuestion() {
@@ -842,17 +845,54 @@
       // Скрываем маскот во время игры
       gameMascotEl.style.display = 'none';
       
-      // Показываем кнопку "Play Again" и скрываем форму отправки
+      // Показываем кнопку "Play Again"
       document.getElementById("play-again-btn").style.display = 'block';
       questionEl.classList.add("hidden");
       answersEl.classList.add("hidden");
     }
 
-    // Отправка результата (функция оставлена для совместимости, но не показывается пользователю)
+    // Отправка результата (изменена на XMLHttpRequest)
     function submitScore() {
-      // Эта функция больше не используется, поскольку форма подачи скрыта
-      console.log("Submit functionality disabled as requested");
+      const name = document.getElementById("username").value;
+      const contact = document.getElementById("contact").value || "";
+      const scoreValue = document.getElementById("score-display").textContent;
       
-      // Показываем кнопку играть снова
-      document.getElementById("play-again-btn").style.display = 'block';
+      if (!name) return alert("Please enter your name");
+
+      // Обновленный URL на новый скрипт
+      const scriptURL = "https://script.google.com/macros/s/AKfycbykXzcVrQS2f61xGU0Va99SBReGo5XTKDcxbTWzA6Q-kbXp7fJ8bgZNN9MqD8HcuikBmw/exec";
+      
+      // Показываем статус отправки
+      document.getElementById("submit-msg").textContent = "Submitting...";
+      
+      // Используем XMLHttpRequest вместо iframe
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", `${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(scoreValue)}&contact=${encodeURIComponent(contact)}&t=${Date.now()}`);
+      
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          document.getElementById("submit-msg").textContent = "Score submitted!";
+          drawCustomLeaderboard();
+          
+          // После успешной отправки показываем кнопку играть снова
+          document.getElementById("play-again-btn").style.display = 'block';
+          
+          setTimeout(() => {
+            location.reload();
+          }, 1500);
+        } else {
+          document.getElementById("submit-msg").textContent = "Failed to submit. Please try again.";
+          console.error("Error response: ", xhr.responseText);
+        }
+      };
+      
+      xhr.onerror = function(e) {
+        document.getElementById("submit-msg").textContent = "Failed to submit. Please try again.";
+        console.error("Error sending request: ", e);
+      };
+      
+      xhr.send();
     }
+  </script>
+</body>
+</html>
