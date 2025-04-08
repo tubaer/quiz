@@ -434,6 +434,26 @@
       "mascot rzobran-06"
     ];
     const mascotFinal = "mascot rzobran-07";
+    
+    // Предзагрузка всех SVG изображений для устранения мерцания
+    const preloadedImages = {};
+    
+    function preloadImages() {
+      // Предзагружаем все изображения маскотов
+      mascotVariants.forEach(variant => {
+        const img = new Image();
+        img.src = `${variant}.svg`;
+        preloadedImages[variant] = img;
+      });
+      
+      // Предзагружаем финальный маскот
+      const finalImg = new Image();
+      finalImg.src = `${mascotFinal}.svg`;
+      preloadedImages[mascotFinal] = finalImg;
+    }
+    
+    // Вызываем предзагрузку при инициализации
+    preloadImages();
 
     const questions = [
       {
@@ -467,30 +487,90 @@
     function updateMascot(index) {
       if (index === undefined) {
         // Установка первого маскота при запуске игры
-        const newImg = document.createElement('img');
-        newImg.src = `${mascotVariants[0]}.svg`;
-        newImg.alt = "Mascot";
-        newImg.style.width = "100%";
-        newImg.style.height = "auto";
-        
-        // Очищаем контейнер и добавляем новый маскот
-        gameMascotEl.innerHTML = '';
-        gameMascotEl.appendChild(newImg);
-        return;
+        if (preloadedImages[mascotVariants[0]]) {
+          // Создаем новый элемент img с использованием предзагруженного изображения
+          const newImg = document.createElement('img');
+          newImg.src = preloadedImages[mascotVariants[0]].src;
+          newImg.alt = "Mascot";
+          newImg.style.width = "100%";
+          newImg.style.height = "auto";
+          
+          // Создаем новый элемент, прежде чем удалить старый
+          const tempContainer = document.createElement('div');
+          tempContainer.style.position = "absolute";
+          tempContainer.style.top = "0";
+          tempContainer.style.left = "0";
+          tempContainer.style.width = "100%";
+          tempContainer.style.height = "100%";
+          tempContainer.appendChild(newImg);
+          
+          // Добавляем новый элемент, затем удаляем старое содержимое
+          gameMascotEl.appendChild(tempContainer);
+          
+          // Удаляем старое содержимое после того, как новое загрузилось
+          setTimeout(() => {
+            while (gameMascotEl.children.length > 1) {
+              gameMascotEl.removeChild(gameMascotEl.firstChild);
+            }
+          }, 10);
+          
+          return;
+        } else {
+          // Если предзагрузка не сработала, используем обычный способ
+          const newImg = document.createElement('img');
+          newImg.src = `${mascotVariants[0]}.svg`;
+          newImg.alt = "Mascot";
+          newImg.style.width = "100%";
+          newImg.style.height = "auto";
+          
+          gameMascotEl.innerHTML = '';
+          gameMascotEl.appendChild(newImg);
+          return;
+        }
       }
       
       // Проверяем, что индекс в пределах массива
       if (index >= 0 && index < mascotVariants.length) {
-        // Создаем новый элемент img, чтобы избежать мерцания
-        const newImg = document.createElement('img');
-        newImg.src = `${mascotVariants[index]}.svg`;
-        newImg.alt = "Mascot";
-        newImg.style.width = "100%";
-        newImg.style.height = "auto";
+        const variant = mascotVariants[index];
         
-        // Очищаем контейнер и добавляем новый маскот
-        gameMascotEl.innerHTML = '';
-        gameMascotEl.appendChild(newImg);
+        if (preloadedImages[variant]) {
+          // Создаем новый элемент img с использованием предзагруженного изображения
+          const newImg = document.createElement('img');
+          newImg.src = preloadedImages[variant].src;
+          newImg.alt = "Mascot";
+          newImg.style.width = "100%";
+          newImg.style.height = "auto";
+          
+          // Плавная замена: сначала добавляем новое изображение поверх старого
+          const tempContainer = document.createElement('div');
+          tempContainer.style.position = "absolute";
+          tempContainer.style.top = "0";
+          tempContainer.style.left = "0";
+          tempContainer.style.width = "100%";
+          tempContainer.style.height = "100%";
+          tempContainer.appendChild(newImg);
+          
+          // Добавляем новый элемент, затем удаляем старое содержимое
+          gameMascotEl.appendChild(tempContainer);
+          
+          // Удаляем старое содержимое после того, как новое загрузилось
+          setTimeout(() => {
+            while (gameMascotEl.children.length > 1) {
+              gameMascotEl.removeChild(gameMascotEl.firstChild);
+            }
+          }, 10);
+        } else {
+          // Запасной вариант, если предзагрузка не сработала
+          const newImg = document.createElement('img');
+          newImg.src = `${variant}.svg`;
+          newImg.alt = "Mascot";
+          newImg.style.width = "100%";
+          newImg.style.height = "auto";
+          
+          // Очищаем контейнер и добавляем новый маскот
+          gameMascotEl.innerHTML = '';
+          gameMascotEl.appendChild(newImg);
+        }
       }
     }
 
